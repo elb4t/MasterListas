@@ -9,18 +9,54 @@
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:fitsSystemWindows="true" />
+        android:fitsSystemWindows="true">
 
-    <FrameLayout
-        android:id="@+id/framely"
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:toolbarId="@+id/toolbar">
+
+
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/detail_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Listas"
+                    android:textColor="#fff"
+                    android:textSize="18sp" />
+            </android.support.v7.widget.Toolbar>
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nsv"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_gravity="bottom"
-        android:layout_margin="16dp"
-        android:background="#fff"
-        android:elevation="4dp"
-        app:layout_anchor="@+id/app_bar"
-        app:layout_anchorGravity="bottom" />
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <FrameLayout
+            android:id="@+id/framely"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_gravity="bottom"
+            android:layout_margin="16dp"
+            android:background="#fff"
+            android:elevation="4dp"
+            app:layout_anchor="@+id/app_bar"
+            app:layout_anchorGravity="bottom" />
+    </android.support.v4.widget.NestedScrollView>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -28,10 +64,10 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:clickable="true"
+        android:focusable="true"
         android:src="@drawable/fab_plus"
         app:elevation="6dp"
-        app:layout_anchor="@+id/app_bar"
-        app:layout_anchorGravity="bottom|end"
-        app:rippleColor="#616161"
-        android:focusable="true" />
+        app:layout_anchor="@+id/nsv"
+        app:layout_anchorGravity="top|end"
+        app:rippleColor="#616161" />
 </android.support.design.widget.CoordinatorLayout>

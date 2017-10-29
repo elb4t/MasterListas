@@ -6,7 +6,10 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_listas.*
+
+
 
 
 class ListasActivity : AppCompatActivity() {
@@ -38,6 +41,10 @@ class ListasActivity : AppCompatActivity() {
         adapter = ListaAdapter(items)
         reciclador.adapter = adapter
 
-
+        reciclador.addOnItemTouchListener(RecyclerItemClickListener(applicationContext, object : RecyclerItemClickListener.OnItemClickListener {
+            override fun onItemClick(v: View, position: Int) {
+                Toast.makeText(applicationContext, "" + position, Toast.LENGTH_SHORT).show()
+            }
+        }))
     }
 }

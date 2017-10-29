@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/pattern"/>
+                android:src="@drawable/pattern" />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/detail_toolbar"
@@ -50,16 +50,12 @@
         android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <FrameLayout
-            android:id="@+id/framely"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/reciclador"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_gravity="bottom"
-            android:layout_margin="16dp"
-            android:background="#fff"
-            android:elevation="4dp"
-            app:layout_anchor="@+id/app_bar"
-            app:layout_anchorGravity="bottom" />
+            android:layout_height="match_parent"
+            android:background="#ffffff"
+            android:scrollbars="vertical" />
     </android.support.v4.widget.NestedScrollView>
 
     <android.support.design.widget.FloatingActionButton

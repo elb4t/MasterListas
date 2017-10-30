@@ -58,7 +58,7 @@
         app:layout_constraintTop_toBottomOf="@+id/til_usuario">
 
         <EditText
-            android:id="@+id/contraseña"
+            android:id="@+id/contrasena"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Contraseña"
@@ -78,4 +78,16 @@
         android:textSize="12dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/til_contraseña" />
+
+    <CheckBox
+        android:id="@+id/mostrar_contrasena"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:onClick="mostrarContraseña"
+        android:text="Mostrar contraseña"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="12dp"
+        app:layout_constraintLeft_toRightOf="@+id/recordarme"
+        app:layout_constraintTop_toTopOf="@+id/recordarme" />
 </android.support.constraint.ConstraintLayout>

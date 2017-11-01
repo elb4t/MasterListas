@@ -2,4 +2,7 @@
     <string name="app_name">MasterListas</string>
     <string name="drawer_open">navigation drawer abierto</string>
     <string name="drawer_close">navigation drawer cerrado</string>
+
+    <!--Transición-->
+    <string name="transition_name_img">transition:IMG</string>
 </resources>

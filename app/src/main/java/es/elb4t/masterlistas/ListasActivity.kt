@@ -1,8 +1,11 @@
 package es.elb4t.masterlistas
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
+import android.support.v4.app.ActivityOptionsCompat
+import android.support.v4.util.Pair
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
@@ -59,19 +62,26 @@ class ListasActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
         reciclador.addOnItemTouchListener(RecyclerItemClickListener(applicationContext, object : RecyclerItemClickListener.OnItemClickListener {
             override fun onItemClick(v: View, position: Int) {
-                Toast.makeText(applicationContext, "" + position, Toast.LENGTH_SHORT).show()
+                val intent = Intent(applicationContext, DetalleListaActivity::class.java)
+                intent.putExtra("numeroLista", position)
+
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        this@ListasActivity,
+                        Pair<View,String>(v.findViewById(R.id.imagen), getString(R.string.transition_name_img))
+                )
+                startActivity(intent, options.toBundle())
             }
         }))
 
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId){
+        when (item.itemId) {
             nav_1 -> {
-                Toast.makeText(this, "Opción 1",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Opción 1", Toast.LENGTH_SHORT).show()
             }
-            nav_2 -> Toast.makeText(this, "opción 2",Toast.LENGTH_SHORT).show()
-            nav_3 -> Toast.makeText(this, "Opción 3",Toast.LENGTH_SHORT).show()
+            nav_2 -> Toast.makeText(this, "opción 2", Toast.LENGTH_SHORT).show()
+            nav_3 -> Toast.makeText(this, "Opción 3", Toast.LENGTH_SHORT).show()
         }
         drawer_layout.closeDrawer(GravityCompat.START)
         return true

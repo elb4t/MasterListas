@@ -42,5 +42,10 @@ class InicioSesionActivity : AppCompatActivity() {
         contrasena.setText("")
         usuario.requestFocus()
     }
+
+    fun registrarUsuario(view: View) {
+        val intent = Intent(this, RegistroUsuarioActivity::class.java)
+        startActivity(intent)
+    }
 }
 

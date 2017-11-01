@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Iniciar sesión"
+            android:text="Registro de usuario"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/logo" />
 
@@ -45,7 +45,7 @@
                 android:id="@+id/usuario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nombre de usuario o correo"
+                android:hint="Correo electronico"
                 android:imeOptions="actionNext"
                 android:inputType="text"
                 android:textSize="14dp" />
@@ -62,30 +62,37 @@
             app:layout_constraintTop_toBottomOf="@+id/til_usuario">
 
             <EditText
-                android:id="@+id/contrasena"
+                android:id="@+id/reg_contrasena"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ripple2"
                 android:hint="Contraseña"
+                android:imeOptions="actionNext"
+                android:inputType="textPassword"
+                android:textSize="14dp" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_verificar_contraseña"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:minHeight="?android:attr/actionBarSize"
+            android:transitionGroup="true"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/til_contraseña">
+
+            <EditText
+                android:id="@+id/reg_verificar_contrasena"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Verificar contraseña"
                 android:imeOptions="actionDone"
                 android:inputType="textPassword"
                 android:textSize="14dp" />
         </android.support.design.widget.TextInputLayout>
 
         <CheckBox
-            android:id="@+id/recordarme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:onClick="loguearCheckbox"
-            android:text="Recordarme"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="12dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/til_contraseña" />
-
-        <CheckBox
-            android:id="@+id/mostrar_contrasena"
+            android:id="@+id/reg_mostrar_contrasena"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
@@ -93,23 +100,22 @@
             android:text="Mostrar contraseña"
             android:textColor="@android:color/darker_gray"
             android:textSize="12dp"
-            app:layout_constraintLeft_toRightOf="@+id/recordarme"
-            app:layout_constraintTop_toTopOf="@+id/recordarme" />
+            app:layout_constraintTop_toBottomOf="@+id/til_verificar_contraseña"/>
 
         <Button
             android:id="@+id/butt_acceder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
             android:background="@drawable/ripple"
             android:elevation="2dp"
-            android:onClick="acceder"
-            android:text="Iniciar Sesión"
+            android:onClick="registro"
+            android:text="Registrar usuario"
             android:textColor="@android:color/white"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/butt_borrar"
-            app:layout_constraintTop_toBottomOf="@+id/recordarme" />
+            app:layout_constraintTop_toBottomOf="@+id/reg_mostrar_contrasena"
+            tools:layout_editor_absoluteY="285dp" />
 
         <Button
             android:id="@+id/butt_borrar"
@@ -125,57 +131,6 @@
             app:layout_constraintLeft_toRightOf="@+id/butt_acceder"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/butt_acceder" />
-
-        <TextView
-            android:id="@+id/olvidado"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/ripple2"
-            android:clickable="true"
-            android:text="HE OLVIDADO MI CONTRASEÑA"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/butt_acceder" />
-
-        <TextView
-            android:id="@+id/registro"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/ripple2"
-            android:clickable="true"
-            android:onClick="registrarUsuario"
-            android:text="QUIERO REGISTRARME EN LA APLICACIÓN"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/olvidado" />
-
-        <Button
-            android:id="@+id/boton_facebook"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="32dp"
-            android:background="@color/primaryLightColor"
-            android:drawableLeft="@drawable/ic_facebook"
-            android:onClick="acceder"
-            android:text="Iniciar sesión con Facebook"
-            android:textColor="#000"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/registro" />
-
-        <Button
-            android:id="@+id/boton_google"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/colorPrimaryDark"
-            android:drawableLeft="@drawable/ic_google"
-            android:onClick="acceder"
-            android:text="Iniciar sesión con Google"
-            android:textColor="#fff"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/boton_facebook" />
 
 
     </android.support.constraint.ConstraintLayout>

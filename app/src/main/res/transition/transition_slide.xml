@@ -1,5 +1,18 @@
 <transitionSet xmlns:android="http://schemas.android.com/apk/res/android">
     <slide
         android:duration="300"
-        android:slideEdge="top" />
+        android:slideEdge="top">
+        <targets>
+            <target android:excludeId="@android:id/statusBarBackground" />
+            <target android:excludeId="@android:id/navigationBarBackground" />
+            <target android:excludeId="@id/app_bar" />
+            <target android:excludeId="@id/detail_toolbar" />
+        </targets>
+    </slide>
+    <fade android:duration="300">
+        <targets>
+            <target android:targetId="@id/app_bar" />
+            <target android:targetId="@id/detail_toolbar" />
+        </targets>
+    </fade>
 </transitionSet>

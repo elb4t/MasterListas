@@ -1,12 +1,14 @@
 <transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
-    android:duration="2000"
+    android:duration="300"
     android:transitionOrdering="together">
-    <slide android:slideEdge="left">
+    <slide android:slideEdge="left"
+        android:interpolator="@android:interpolator/accelerate_decelerate">
         <targets>
             <target android:targetId="@id/fab" />
         </targets>
     </slide>
-    <fade android:fadingMode="fade_in">
+    <fade android:fadingMode="fade_in"
+        android:interpolator="@android:interpolator/bounce" >
         <targets>
             <target android:targetId="@id/app_bar" />
         </targets>

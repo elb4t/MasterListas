@@ -13,6 +13,9 @@
         <item name="android:windowExitTransition">@transition/transition_explode</item>
         <item name="android:windowReenterTransition">@transition/transition_fade</item>
         <item name="android:windowReturnTransition">@transition/transition_fade</item>
+        <!-- Para elementos comparticos -->
+        <item name="android:windowSharedElementEnterTransition">@transition/transition_curva</item>
+        <item name="android:windowSharedElementExitTransition">@transition/transition_curva</item>
     </style>
 
 </resources>

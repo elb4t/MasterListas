@@ -31,15 +31,18 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/logo" />
 
-        <android.support.design.widget.TextInputLayout
+        <com.github.florent37.materialtextfield.MaterialTextField
             android:id="@+id/til_usuario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:minHeight="?android:attr/actionBarSize"
-            android:transitionGroup="true"
+            app:mtf_labelColor="#666"
+            app:mtf_image="@drawable/ic_mail_black_24dp"
+            app:mtf_backgroundColor="@color/primaryTextColor"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/titulo">
+            app:layout_constraintTop_toBottomOf="@+id/titulo"
+            >
 
             <EditText
                 android:id="@+id/usuario"
@@ -49,17 +52,21 @@
                 android:imeOptions="actionNext"
                 android:inputType="text"
                 android:textSize="14dp" />
-        </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        </com.github.florent37.materialtextfield.MaterialTextField>
+
+        <com.github.florent37.materialtextfield.MaterialTextField
             android:id="@+id/til_contraseña"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:minHeight="?android:attr/actionBarSize"
-            android:transitionGroup="true"
+            app:mtf_labelColor="#666"
+            app:mtf_image="@drawable/ic_key_black_24dp"
+            app:mtf_backgroundColor="@color/primaryTextColor"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/til_usuario">
+            app:layout_constraintTop_toBottomOf="@+id/til_usuario"
+            >
 
             <EditText
                 android:id="@+id/contrasena"
@@ -69,8 +76,9 @@
                 android:hint="Contraseña"
                 android:imeOptions="actionDone"
                 android:inputType="textPassword"
-                android:textSize="14dp" />
-        </android.support.design.widget.TextInputLayout>
+                android:textSize="14dp"  />
+
+        </com.github.florent37.materialtextfield.MaterialTextField>
 
         <CheckBox
             android:id="@+id/recordarme"

@@ -1,5 +1,6 @@
 package es.elb4t.masterlistas
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -34,7 +35,7 @@ class InicioSesionActivity : AppCompatActivity() {
 
     fun acceder(view: View) {
         val intent = Intent(this, ListasActivity::class.java)
-        startActivity(intent)
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
     }
 
     fun borrarCampos(view: View) {

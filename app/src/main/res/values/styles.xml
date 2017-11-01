@@ -11,6 +11,8 @@
         <item name="android:windowAllowReturnTransitionOverlap">false</item>
         <item name="android:windowEnterTransition">@transition/transition_explode</item>
         <item name="android:windowExitTransition">@transition/transition_explode</item>
+        <item name="android:windowReenterTransition">@transition/transition_fade</item>
+        <item name="android:windowReturnTransition">@transition/transition_fade</item>
     </style>
 
 </resources>

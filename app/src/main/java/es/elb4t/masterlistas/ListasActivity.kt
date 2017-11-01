@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.transition.TransitionInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -73,6 +74,9 @@ class ListasActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
                 startActivity(intent, options.toBundle())
             }
         }))
+
+        var lista_enter = TransitionInflater.from(this).inflateTransition(R.transition.transition_lista_enter)
+        getWindow().setEnterTransition(lista_enter);
 
     }
 

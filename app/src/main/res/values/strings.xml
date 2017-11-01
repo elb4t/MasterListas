@@ -5,4 +5,5 @@
 
     <!--Transición-->
     <string name="transition_name_img">transition:IMG</string>
+    <string name="transition_name_boton">transition:BOTON</string>
 </resources>

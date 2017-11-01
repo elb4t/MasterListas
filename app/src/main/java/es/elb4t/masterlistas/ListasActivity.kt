@@ -67,7 +67,8 @@ class ListasActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
                 val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                         this@ListasActivity,
-                        Pair<View,String>(v.findViewById(R.id.imagen), getString(R.string.transition_name_img))
+                        Pair<View,String>(v.findViewById(R.id.imagen), getString(R.string.transition_name_img)),
+                        Pair<View,String>(fab, getString(R.string.transition_name_boton))
                 )
                 startActivity(intent, options.toBundle())
             }

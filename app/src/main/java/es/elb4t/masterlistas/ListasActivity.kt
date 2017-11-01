@@ -6,24 +6,27 @@ import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.util.Pair
-import android.support.v4.view.GravityCompat
-import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.Toolbar
 import android.transition.TransitionInflater
-import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import es.elb4t.masterlistas.R.id.*
-import kotlinx.android.synthetic.main.activity_listas.*
+import com.mxn.soul.flowingdrawer_core.ElasticDrawer
+import com.mxn.soul.flowingdrawer_core.FlowingDrawer
 import kotlinx.android.synthetic.main.content_listas.*
 
 
-class ListasActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
 
+
+
+
+
+class ListasActivity : AppCompatActivity() {
+
+    private lateinit var mDrawer: FlowingDrawer
     private lateinit var adapter: RecyclerView.Adapter<*>
     private lateinit var lManager: RecyclerView.LayoutManager
 
@@ -32,15 +35,22 @@ class ListasActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         setContentView(R.layout.activity_listas)
 
         // Toolbar
-        setSupportActionBar(detail_toolbar)
+        val toolbar = findViewById<View>(R.id.detail_toolbar) as Toolbar
+        setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         // Navigation drawer
-        val toggle = ActionBarDrawerToggle(this, drawer_layout, detail_toolbar, R.string.drawer_open, R.string.drawer_close)
-        drawer_layout.addDrawerListener(toggle)
-        toggle.syncState()
-        nav_view.setNavigationItemSelectedListener(this)
+        val navigationView = findViewById<View>(R.id.vNavigation) as NavigationView
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            Toast.makeText(applicationContext, menuItem.title, Toast.LENGTH_SHORT).show()
+            false
+        }
+        mDrawer = findViewById<View>(R.id.drawerlayout) as FlowingDrawer
+        mDrawer.setTouchMode(ElasticDrawer.TOUCH_MODE_BEZEL)
+        toolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp)
+        toolbar.setNavigationOnClickListener { mDrawer.toggleMenu() }
 
+        // Fab button
         fab.setOnClickListener(View.OnClickListener { view ->
             Snackbar.make(view, "Se presionó el FAB", Snackbar.LENGTH_LONG).show()
         })
@@ -80,7 +90,7 @@ class ListasActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
     }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+   /* override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             nav_1 -> {
                 Toast.makeText(this, "Opción 1", Toast.LENGTH_SHORT).show()
@@ -90,12 +100,11 @@ class ListasActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         }
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
-    }
+    }*/
 
     override fun onBackPressed() {
-        val drawer = findViewById<View>(R.id.drawer_layout) as DrawerLayout
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START)
+        if (mDrawer.isMenuVisible()) {
+            mDrawer.closeMenu()
         } else {
             super.onBackPressed()
         }

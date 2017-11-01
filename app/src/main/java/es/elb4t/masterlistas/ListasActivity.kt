@@ -13,9 +13,12 @@ import android.support.v7.widget.Toolbar
 import android.transition.TransitionInflater
 import android.view.View
 import android.widget.Toast
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.mxn.soul.flowingdrawer_core.ElasticDrawer
 import com.mxn.soul.flowingdrawer_core.FlowingDrawer
 import kotlinx.android.synthetic.main.content_listas.*
+
+
 
 
 
@@ -34,6 +37,8 @@ class ListasActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listas)
 
+        val mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
+
         // Toolbar
         val toolbar = findViewById<View>(R.id.detail_toolbar) as Toolbar
         setSupportActionBar(toolbar)
@@ -48,7 +53,11 @@ class ListasActivity : AppCompatActivity() {
         mDrawer = findViewById<View>(R.id.drawerlayout) as FlowingDrawer
         mDrawer.setTouchMode(ElasticDrawer.TOUCH_MODE_BEZEL)
         toolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp)
-        toolbar.setNavigationOnClickListener { mDrawer.toggleMenu() }
+        toolbar.setNavigationOnClickListener {
+            mDrawer.toggleMenu()
+            mFirebaseAnalytics.logEvent("Navigation_Drawer", Bundle())
+            Toast.makeText(this,"Nav",Toast.LENGTH_SHORT).show()
+        }
 
         // Fab button
         fab.setOnClickListener(View.OnClickListener { view ->

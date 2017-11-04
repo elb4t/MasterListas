@@ -11,12 +11,18 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.transition.TransitionInflater
+import android.util.Log
 import android.view.View
 import android.widget.Toast
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.mxn.soul.flowingdrawer_core.ElasticDrawer
 import com.mxn.soul.flowingdrawer_core.FlowingDrawer
 import kotlinx.android.synthetic.main.content_listas.*
+
+
 
 
 
@@ -33,11 +39,15 @@ class ListasActivity : AppCompatActivity() {
     private lateinit var adapter: RecyclerView.Adapter<*>
     private lateinit var lManager: RecyclerView.LayoutManager
 
+    private lateinit var mFirebaseAnalytics: FirebaseAnalytics
+    private lateinit var remoteConfig: FirebaseRemoteConfig
+    private val CACHE_TIME_SECONDS: Long = 30
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listas)
 
-        val mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         // Toolbar
         val toolbar = findViewById<View>(R.id.detail_toolbar) as Toolbar
@@ -97,6 +107,22 @@ class ListasActivity : AppCompatActivity() {
         var lista_enter = TransitionInflater.from(this).inflateTransition(R.transition.transition_lista_enter)
         getWindow().setEnterTransition(lista_enter);
 
+        remoteConfig = FirebaseRemoteConfig.getInstance()
+        val config = FirebaseRemoteConfigSettings.Builder().setDeveloperModeEnabled(BuildConfig.DEBUG).build()
+        remoteConfig.setConfigSettings(config)
+        remoteConfig.fetch(CACHE_TIME_SECONDS)
+                .addOnCompleteListener(this, OnCompleteListener<Void> { task ->
+                    if (task.isSuccessful) {
+                        remoteConfig.activateFetched()
+                        val navigation_abierto = remoteConfig.getString("navigation_drawer_abierto")
+                        mFirebaseAnalytics.setUserProperty( "nav_drawer_abierto", navigation_abierto.toString() )
+                        Log.e("-----",navigation_abierto)
+                        if (navigation_abierto == "true") {
+                            abrePrimeraVez()
+                        }
+                    }
+                })
+
     }
 
    /* override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -116,6 +142,17 @@ class ListasActivity : AppCompatActivity() {
             mDrawer.closeMenu()
         } else {
             super.onBackPressed()
+        }
+    }
+
+    fun abrePrimeraVez() {
+        val sp = getSharedPreferences("mispreferencias", 0)
+        val primerAcceso = sp.getBoolean("abrePrimeraVez", true)
+        mFirebaseAnalytics.setUserProperty( "abrePrimeraVez", primerAcceso.toString() )
+        if (primerAcceso) {
+            mDrawer.openMenu()
+            val e = sp.edit()
+            e.putBoolean("abrePrimeraVez", false).commit()
         }
     }
 }

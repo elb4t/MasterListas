@@ -18,10 +18,10 @@ class DetalleListaActivity : AppCompatActivity() {
 
         val imageView = findViewById<View>(R.id.imagen) as ImageView
         if (numeroLista == 0){
-            detail_toolbar.title = "Trabajo"
+            detail_toolbar.title = getString(R.string.trabajo)
             imageView.setImageResource(R.drawable.trabajo)
         } else {
-            detail_toolbar.title = "Personal"
+            detail_toolbar.title = getString(R.string.personal)
             imageView.setImageResource(R.drawable.casa)
         }
     }

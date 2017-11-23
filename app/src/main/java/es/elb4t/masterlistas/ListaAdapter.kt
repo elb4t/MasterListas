@@ -1,5 +1,6 @@
 package es.elb4t.masterlistas
 
+import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -11,14 +12,14 @@ import kotlinx.android.synthetic.main.elemento_lista.view.*
 /**
  * Created by eloy on 29/10/17.
  */
-class ListaAdapter(val items: List<Lista>) : RecyclerView.Adapter<ListaViewHolder>() { //, val listener: (Lista) -> Unit
+class ListaAdapter(val items: List<Lista>, val ctx: Context) : RecyclerView.Adapter<ListaViewHolder>() { //, val listener: (Lista) -> Unit
 
 
     override fun onBindViewHolder(viewHolder: ListaViewHolder, position: Int) {
         val item = items.get(position)
         viewHolder.imagen.setImageResource(item.imagen)
         viewHolder.nombre.text = item.nombre
-        viewHolder.elementos.text = "Elementos: " + item.elementos.toString()
+        viewHolder.elementos.text = ctx.getString(R.string.elementos) + item.elementos.toString()
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup?, viewType: Int): ListaViewHolder {

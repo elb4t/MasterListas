@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Iniciar sesión"
+            android:text="@string/iniciar_sesion"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/logo" />
 
@@ -48,7 +48,7 @@
                 android:id="@+id/usuario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nombre de usuario o correo"
+                android:hint="@string/nombre_de_usuario_o_correo"
                 android:imeOptions="actionNext"
                 android:inputType="text"
                 android:textSize="14dp" />
@@ -73,7 +73,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/ripple2"
-                android:hint="Contraseña"
+                android:hint="@string/contrasena"
                 android:imeOptions="actionDone"
                 android:inputType="textPassword"
                 android:textSize="14dp"  />
@@ -86,7 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:onClick="loguearCheckbox"
-            android:text="Recordarme"
+            android:text="@string/recordarme"
             android:textColor="@android:color/darker_gray"
             android:textSize="12dp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -98,7 +98,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:onClick="mostrarContraseña"
-            android:text="Mostrar contraseña"
+            android:text="@string/mostrar_contrasena"
             android:textColor="@android:color/darker_gray"
             android:textSize="12dp"
             app:layout_constraintLeft_toRightOf="@+id/recordarme"
@@ -113,7 +113,7 @@
             android:background="@drawable/ripple"
             android:elevation="2dp"
             android:onClick="acceder"
-            android:text="Iniciar Sesión"
+            android:text="@string/iniciar_sesion"
             android:textColor="@android:color/white"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/butt_borrar"
@@ -128,7 +128,7 @@
             android:clickable="true"
             android:elevation="2dp"
             android:onClick="borrarCampos"
-            android:text="Borrar"
+            android:text="@string/borrar"
             android:textColor="@android:color/white"
             app:layout_constraintLeft_toRightOf="@+id/butt_acceder"
             app:layout_constraintRight_toRightOf="parent"
@@ -141,7 +141,7 @@
             android:layout_marginTop="16dp"
             android:background="@drawable/ripple2"
             android:clickable="true"
-            android:text="HE OLVIDADO MI CONTRASEÑA"
+            android:text="@string/he_olvidado_mi_contrase_a"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/butt_acceder" />
 
@@ -153,7 +153,7 @@
             android:background="@drawable/ripple2"
             android:clickable="true"
             android:onClick="registrarUsuario"
-            android:text="QUIERO REGISTRARME EN LA APLICACIÓN"
+            android:text="@string/quiero_registrarme_en_la_aplicaci_n"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/olvidado" />
 
@@ -165,7 +165,7 @@
             android:background="@color/primaryLightColor"
             android:drawableLeft="@drawable/ic_facebook"
             android:onClick="acceder"
-            android:text="Iniciar sesión con Facebook"
+            android:text="@string/iniciar_sesi_n_con_facebook"
             android:textColor="#000"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -179,7 +179,7 @@
             android:background="@color/colorPrimaryDark"
             android:drawableLeft="@drawable/ic_google"
             android:onClick="acceder"
-            android:text="Iniciar sesión con Google"
+            android:text="@string/iniciar_sesi_n_con_google"
             android:textColor="#fff"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

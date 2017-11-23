@@ -3,26 +3,26 @@
         <item
             android:id="@+id/nav_1"
             android:icon="@android:drawable/ic_menu_gallery"
-            android:title=" Opción 1" />
+            android:title="@string/opci_n_1" />
         <item
             android:id="@+id/nav_2"
             android:icon="@android:drawable/ic_menu_gallery"
-            android:title=" Opción 2" />
+            android:title="@string/opci_n_2" />
         <item
             android:id="@+id/nav_3"
             android:icon="@android:drawable/ic_menu_gallery"
-            android:title=" Opción 3" />
+            android:title="@string/opci_n_3" />
     </group>
-    <item android:title="Acciones adicionales">
+    <item android:title="@string/acciones_adicionales">
         <menu>
             <item
                 android:id="@+id/nav_preferencias"
                 android:icon="@android:drawable/ic_menu_manage"
-                android:title="Preferencias" />
+                android:title="@string/preferencias" />
             <item
                 android:id="@+id/nav_compartir"
                 android:icon="@android:drawable/ic_menu_share"
-                android:title="Compartir" />
+                android:title="@string/compartir" />
         </menu>
     </item>
 </menu>

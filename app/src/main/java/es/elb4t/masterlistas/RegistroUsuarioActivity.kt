@@ -27,7 +27,7 @@ class RegistroUsuarioActivity : AppCompatActivity() {
     }
 
     fun registro(view: View) {
-        Toast.makeText(this, "Usuario registrado",Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.usuario_registrado),Toast.LENGTH_SHORT).show()
         val intent = Intent(this, ListasActivity::class.java)
         startActivity(intent)
     }

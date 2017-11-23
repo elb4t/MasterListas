@@ -23,16 +23,6 @@ import com.mxn.soul.flowingdrawer_core.FlowingDrawer
 import kotlinx.android.synthetic.main.content_listas.*
 
 
-
-
-
-
-
-
-
-
-
-
 class ListasActivity : AppCompatActivity() {
 
     private lateinit var mDrawer: FlowingDrawer
@@ -76,8 +66,8 @@ class ListasActivity : AppCompatActivity() {
 
         //Inicializar los elementos
         var items = ArrayList<Lista>()
-        items.add(Lista(R.drawable.trabajo, "Trabajo", 2))
-        items.add(Lista(R.drawable.casa, "Personal", 3))
+        items.add(Lista(R.drawable.trabajo, getString(R.string.trabajo), 2))
+        items.add(Lista(R.drawable.casa, getString(R.string.personal), 3))
 
         // Obtener el Recycler
         reciclador.setHasFixedSize(true)
@@ -87,7 +77,7 @@ class ListasActivity : AppCompatActivity() {
         reciclador.layoutManager = lManager
 
         // Crear nuevo adaptador
-        adapter = ListaAdapter(items)
+        adapter = ListaAdapter(items, applicationContext)
         reciclador.adapter = adapter
 
         reciclador.addOnItemTouchListener(RecyclerItemClickListener(applicationContext, object : RecyclerItemClickListener.OnItemClickListener {

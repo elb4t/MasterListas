@@ -20,7 +20,7 @@ class InicioSesionActivity : AppCompatActivity() {
     }
 
     fun loguearCheckbox(v: View) {
-        val s = "Recordar datos de usuario: " + if (recordarme.isChecked) "Sí" else "No"
+        val s = getString(R.string.recordar_datos) + if (recordarme.isChecked) android.R.string.yes else android.R.string.no
         Toast.makeText(this, s, Toast.LENGTH_LONG).show()
     }
 

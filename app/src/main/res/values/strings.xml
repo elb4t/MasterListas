@@ -1,9 +1,38 @@
 <resources>
-    <string name="app_name">MasterListas</string>
-    <string name="drawer_open">navigation drawer abierto</string>
-    <string name="drawer_close">navigation drawer cerrado</string>
+    <string name="app_name">MasterLists</string>
+    <string name="drawer_open">drawer navigation open</string>
+    <string name="drawer_close">drawer navigation closed</string>
 
     <!--Transición-->
     <string name="transition_name_img">transition:IMG</string>
     <string name="transition_name_boton">transition:BOTON</string>
+
+
+    <string name="iniciar_sesion">Log in</string>
+    <string name="nombre_de_usuario_o_correo">Username or email</string>
+    <string name="contrasena">Password</string>
+    <string name="recordarme">Remember me</string>
+    <string name="mostrar_contrasena">Show password</string>
+    <string name="borrar">Delete</string>
+    <string name="he_olvidado_mi_contrase_a">I FORGOT MY PASSWORD</string>
+    <string name="quiero_registrarme_en_la_aplicaci_n">I WANT TO REGISTER IN THE APPLICATION</string>
+    <string name="iniciar_sesi_n_con_facebook">Log in with Facebook</string>
+    <string name="iniciar_sesi_n_con_google">Sign in with Google</string>
+    <string name="registro_de_usuario">User register</string>
+    <string name="correo_electronico">E-mail</string>
+    <string name="verificar_contrase_a">Verify password</string>
+    <string name="registrar_usuario">Register user</string>
+    <string name="listas">Lists</string>
+    <string name="masterlistas">MasterLists</string>
+    <string name="opci_n_1">Option 1:</string>
+    <string name="opci_n_2">Option 2:</string>
+    <string name="opci_n_3">Option 3:</string>
+    <string name="acciones_adicionales">Additional actions</string>
+    <string name="preferencias">Settings</string>
+    <string name="compartir">Share</string>
+    <string name="trabajo">Job</string>
+    <string name="personal">Personal</string>
+    <string name="elementos">Elements:</string>
+    <string name="usuario_registrado">Registered user</string>
+    <string name="recordar_datos">Remember user data:</string>
 </resources>

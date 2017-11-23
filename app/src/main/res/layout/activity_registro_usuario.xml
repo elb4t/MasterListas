@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Registro de usuario"
+            android:text="@string/registro_de_usuario"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/logo" />
 
@@ -45,7 +45,7 @@
                 android:id="@+id/usuario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Correo electronico"
+                android:hint="@string/correo_electronico"
                 android:imeOptions="actionNext"
                 android:inputType="text"
                 android:textSize="14dp" />
@@ -65,7 +65,7 @@
                 android:id="@+id/reg_contrasena"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Contraseña"
+                android:hint="@string/contrasena"
                 android:imeOptions="actionNext"
                 android:inputType="textPassword"
                 android:textSize="14dp" />
@@ -85,7 +85,7 @@
                 android:id="@+id/reg_verificar_contrasena"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Verificar contraseña"
+                android:hint="@string/verificar_contrase_a"
                 android:imeOptions="actionDone"
                 android:inputType="textPassword"
                 android:textSize="14dp" />
@@ -97,7 +97,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:onClick="mostrarContraseña"
-            android:text="Mostrar contraseña"
+            android:text="@string/mostrar_contrasena"
             android:textColor="@android:color/darker_gray"
             android:textSize="12dp"
             app:layout_constraintTop_toBottomOf="@+id/til_verificar_contraseña"/>
@@ -110,7 +110,7 @@
             android:background="@drawable/ripple"
             android:elevation="2dp"
             android:onClick="registro"
-            android:text="Registrar usuario"
+            android:text="@string/registrar_usuario"
             android:textColor="@android:color/white"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/butt_borrar"
@@ -126,7 +126,7 @@
             android:clickable="true"
             android:elevation="2dp"
             android:onClick="borrarCampos"
-            android:text="Borrar"
+            android:text="@string/borrar"
             android:textColor="@android:color/white"
             app:layout_constraintLeft_toRightOf="@+id/butt_acceder"
             app:layout_constraintRight_toRightOf="parent"

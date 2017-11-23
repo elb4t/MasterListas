@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MasterListes</string>
+    <string name="drawer_open">navigation drawer ouvert</string>
+    <string name="drawer_close">navigation drawer fermé</string>
+    <string name="iniciar_sesion">Commencer la session</string>
+    <string name="nombre_de_usuario_o_correo">Nom d\'utilisateur ou e-mai</string>
+    <string name="contrasena">Mot de passe</string>
+    <string name="recordarme">Ne pas oublier</string>
+    <string name="mostrar_contrasena">Afficher le mot de passe</string>
+    <string name="borrar">Effacer</string>
+    <string name="he_olvidado_mi_contrase_a">J\'AI OUBLIÉ MON MOT DE PASSE</string>
+    <string name="quiero_registrarme_en_la_aplicaci_n">JE VEUX M\'ENREGISTRER SUR L\'APPLICATION</string>
+    <string name="iniciar_sesi_n_con_facebook">Connectez-vous avec Facebook</string>
+    <string name="iniciar_sesi_n_con_google">Connectez-vous avec Google</string>
+    <string name="registro_de_usuario">Enregistrement de l\'utilisateur</string>
+    <string name="correo_electronico">Courrier électronique</string>
+    <string name="verificar_contrase_a">vérifier le mot de passe</string>
+    <string name="registrar_usuario">utilisateur enregistré</string>
+    <string name="listas">Listes</string>
+    <string name="masterlistas">MasterListes</string>
+    <string name="opci_n_1">Option 1</string>
+    <string name="opci_n_2">option 2</string>
+    <string name="opci_n_3">option 3</string>
+    <string name="acciones_adicionales">actions supplémentaires</string>
+    <string name="preferencias">préférences</string>
+    <string name="compartir">Partager</string>
+    <string name="trabajo">Travail</string>
+    <string name="personal">Privé</string>
+    <string name="elementos">éléments:</string>
+    <string name="usuario_registrado">utilisateur enregistré</string>
+    <string name="recordar_datos">Rappelez-vous les données de l\'utilisateur:</string>
+</resources>

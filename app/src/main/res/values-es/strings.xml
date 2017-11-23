@@ -30,5 +30,7 @@
     <string name="elementos">Elementos:</string>
     <string name="usuario_registrado">Usuario registrado</string>
     <string name="recordar_datos">Recordar datos de usuario:</string>
-
+    <!--Transición-->
+    <string name="transition_name_img">transition:IMG</string>
+    <string name="transition_name_boton">transition:BOTON</string>
 </resources>

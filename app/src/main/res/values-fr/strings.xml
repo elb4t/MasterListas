@@ -30,4 +30,7 @@
     <string name="elementos">éléments:</string>
     <string name="usuario_registrado">utilisateur enregistré</string>
     <string name="recordar_datos">Rappelez-vous les données de l\'utilisateur:</string>
+    <!--Transición-->
+    <string name="transition_name_img">transition:IMG</string>
+    <string name="transition_name_boton">transition:BOTON</string>
 </resources>

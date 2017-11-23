@@ -1,11 +1,11 @@
-package es.elb4t.masterlistas
+package es.ellacer.masterlistas
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import es.elb4t.masterlistas.ListaAdapter.ListaViewHolder
+import es.ellacer.masterlistas.ListaAdapter.ListaViewHolder
 import kotlinx.android.synthetic.main.elemento_lista.view.*
 
 

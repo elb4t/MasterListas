@@ -1,4 +1,4 @@
-package es.elb4t.masterlistas
+package es.ellacer.masterlistas
 
 import android.app.ActivityOptions
 import android.content.Intent

@@ -40,15 +40,15 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
+              "client_id": "958520884293-vfjnnijq94drn0rdriqd9c5f69i0141v.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
               "client_id": "958520884293-0bkh4lb6tqv80v56fcr16ok8vbijgi4k.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "asdfasf"
               }
-            },
-            {
-              "client_id": "958520884293-vfjnnijq94drn0rdriqd9c5f69i0141v.apps.googleusercontent.com",
-              "client_type": 3
             }
           ]
         },
@@ -91,15 +91,15 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
+              "client_id": "958520884293-vfjnnijq94drn0rdriqd9c5f69i0141v.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
               "client_id": "958520884293-0bkh4lb6tqv80v56fcr16ok8vbijgi4k.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "asdfasf"
               }
-            },
-            {
-              "client_id": "958520884293-vfjnnijq94drn0rdriqd9c5f69i0141v.apps.googleusercontent.com",
-              "client_type": 3
             }
           ]
         },
@@ -142,17 +142,48 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
+              "client_id": "958520884293-vfjnnijq94drn0rdriqd9c5f69i0141v.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
               "client_id": "958520884293-0bkh4lb6tqv80v56fcr16ok8vbijgi4k.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "asdfasf"
               }
-            },
-            {
-              "client_id": "958520884293-vfjnnijq94drn0rdriqd9c5f69i0141v.apps.googleusercontent.com",
-              "client_type": 3
             }
           ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:958520884293:android:4c01b253f7261bc5",
+        "android_client_info": {
+          "package_name": "es.ellacer.masterlistas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "958520884293-vfjnnijq94drn0rdriqd9c5f69i0141v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3YlkO22XW4U3izh6Sg_AFRle_zlO-J8Q"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2

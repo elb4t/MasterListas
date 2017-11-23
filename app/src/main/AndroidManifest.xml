@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="es.elb4t.masterlistas">
+    package="es.ellacer.masterlistas">
 
     <application
         android:allowBackup="true"
@@ -9,16 +9,16 @@
         android:roundIcon="@mipmap/ic_launchermasterlistas_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".InicioSesionActivity">
+        <activity android:name="es.ellacer.masterlistas.InicioSesionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ListasActivity" />
-        <activity android:name=".RegistroUsuarioActivity" />
-        <activity android:name=".DetalleListaActivity"></activity>
+        <activity android:name="es.ellacer.masterlistas.ListasActivity" />
+        <activity android:name="es.ellacer.masterlistas.RegistroUsuarioActivity" />
+        <activity android:name="es.ellacer.masterlistas.DetalleListaActivity"></activity>
     </application>
 
 </manifest>

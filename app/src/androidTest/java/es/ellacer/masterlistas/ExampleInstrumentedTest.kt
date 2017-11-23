@@ -1,4 +1,4 @@
-package es.elb4t.masterlistas
+package es.ellacer.masterlistas
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

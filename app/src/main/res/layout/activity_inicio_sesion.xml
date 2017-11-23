@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp"
-        tools:context="es.elb4t.masterlistas.InicioSesionActivity">
+        tools:context="es.ellacer.masterlistas.InicioSesionActivity">
 
         <ImageView
             android:id="@+id/logo"

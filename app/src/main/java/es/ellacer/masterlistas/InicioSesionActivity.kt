@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.InputType
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_inicio_sesion.*
@@ -14,9 +15,14 @@ import kotlinx.android.synthetic.main.activity_inicio_sesion.*
 
 class InicioSesionActivity : AppCompatActivity() {
 
+    var bloqueo: Array<Any?> = arrayOfNulls(0)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_inicio_sesion)
+
+        boton_facebook.setOnClickListener { incrementaIndiceDeBloqueo(it) }
+        boton_google.setOnClickListener { incrementaIndiceDeANR(it) }
     }
 
     fun loguearCheckbox(v: View) {
@@ -47,6 +53,20 @@ class InicioSesionActivity : AppCompatActivity() {
     fun registrarUsuario(view: View) {
         val intent = Intent(this, RegistroUsuarioActivity::class.java)
         startActivity(intent)
+    }
+
+
+    fun incrementaIndiceDeBloqueo(view: View) {
+        bloqueo.set(10,{null})
+        Log.e("bloqueo","-------")
+    }
+
+    fun incrementaIndiceDeANR(view: View) {
+        try {
+            Thread.sleep(10000)
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
     }
 }
 

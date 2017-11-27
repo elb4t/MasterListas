@@ -30,7 +30,7 @@ class InicioSesionActivity : AppCompatActivity() {
         Toast.makeText(this, s, Toast.LENGTH_LONG).show()
     }
 
-    fun mostrarContraseña(v: View) {
+    fun mostrarContrasena(v: View) {
         if (mostrar_contrasena.isChecked) {
             contrasena.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_NORMAL
 

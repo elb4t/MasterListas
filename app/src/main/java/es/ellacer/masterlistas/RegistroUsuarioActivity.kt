@@ -15,7 +15,7 @@ class RegistroUsuarioActivity : AppCompatActivity() {
         setContentView(R.layout.activity_registro_usuario)
     }
 
-    fun mostrarContraseña(v: View) {
+    fun mostrarContrasena(v: View) {
         if (reg_mostrar_contrasena.isChecked) {
             reg_contrasena.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_NORMAL
             reg_verificar_contrasena.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_NORMAL

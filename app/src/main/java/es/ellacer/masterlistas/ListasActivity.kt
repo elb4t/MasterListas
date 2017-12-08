@@ -23,6 +23,8 @@ import com.mxn.soul.flowingdrawer_core.FlowingDrawer
 import kotlinx.android.synthetic.main.content_listas.*
 
 
+
+
 class ListasActivity : AppCompatActivity() {
 
     private lateinit var mDrawer: FlowingDrawer
@@ -47,7 +49,10 @@ class ListasActivity : AppCompatActivity() {
         // Navigation drawer
         val navigationView = findViewById<View>(R.id.vNavigation) as NavigationView
         navigationView.setNavigationItemSelectedListener { menuItem ->
-            Toast.makeText(applicationContext, menuItem.title, Toast.LENGTH_SHORT).show()
+            when (menuItem.itemId) {
+                R.id.nav_compartir -> compatirTexto("http://play.google.com/store/apps/details?id=" + packageName)
+                else -> Toast.makeText(applicationContext, menuItem.title, Toast.LENGTH_SHORT).show()
+            }
             false
         }
         mDrawer = findViewById<View>(R.id.drawerlayout) as FlowingDrawer
@@ -73,7 +78,7 @@ class ListasActivity : AppCompatActivity() {
         reciclador.setHasFixedSize(true)
 
         // Usar un administrador para LinearLayout
-        lManager = LinearLayoutManager(this)
+        lManager = LinearLayoutManager(this) as RecyclerView.LayoutManager
         reciclador.layoutManager = lManager
 
         // Crear nuevo adaptador
@@ -144,5 +149,12 @@ class ListasActivity : AppCompatActivity() {
             val e = sp.edit()
             e.putBoolean("abrePrimeraVez", false).commit()
         }
+    }
+
+    fun compatirTexto(texto: String) {
+        val i = Intent(Intent.ACTION_SEND)
+        i.type = "text/plain"
+        i.putExtra(Intent.EXTRA_TEXT, texto)
+        startActivity(Intent.createChooser(i, "Selecciona aplicación"))
     }
 }

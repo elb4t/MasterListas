@@ -23,8 +23,6 @@ import com.mxn.soul.flowingdrawer_core.FlowingDrawer
 import kotlinx.android.synthetic.main.content_listas.*
 
 
-
-
 class ListasActivity : AppCompatActivity() {
 
     private lateinit var mDrawer: FlowingDrawer
@@ -51,6 +49,7 @@ class ListasActivity : AppCompatActivity() {
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_compartir -> compatirTexto("http://play.google.com/store/apps/details?id=" + packageName)
+                R.id.nav_compartir_lista -> compatirTexto("LISTA DE LA COMPRA: patatas, leche, huevos. ---- Compartido por: http://play.google.com/store/apps/details?id=" + getPackageName())
                 else -> Toast.makeText(applicationContext, menuItem.title, Toast.LENGTH_SHORT).show()
             }
             false
@@ -61,7 +60,7 @@ class ListasActivity : AppCompatActivity() {
         toolbar.setNavigationOnClickListener {
             mDrawer.toggleMenu()
             mFirebaseAnalytics.logEvent("Navigation_Drawer", Bundle())
-            Toast.makeText(this,"Nav",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Nav", Toast.LENGTH_SHORT).show()
         }
 
         // Fab button
@@ -92,8 +91,8 @@ class ListasActivity : AppCompatActivity() {
 
                 val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                         this@ListasActivity,
-                        Pair<View,String>(v.findViewById(R.id.imagen), getString(R.string.transition_name_img)),
-                        Pair<View,String>(fab, getString(R.string.transition_name_boton))
+                        Pair<View, String>(v.findViewById(R.id.imagen), getString(R.string.transition_name_img)),
+                        Pair<View, String>(fab, getString(R.string.transition_name_boton))
                 )
                 startActivity(intent, options.toBundle())
             }
@@ -110,8 +109,8 @@ class ListasActivity : AppCompatActivity() {
                     if (task.isSuccessful) {
                         remoteConfig.activateFetched()
                         val navigation_abierto = remoteConfig.getString("navigation_drawer_abierto")
-                        mFirebaseAnalytics.setUserProperty( "nav_drawer_abierto", navigation_abierto.toString() )
-                        Log.e("-----",navigation_abierto)
+                        mFirebaseAnalytics.setUserProperty("nav_drawer_abierto", navigation_abierto.toString())
+                        Log.e("-----", navigation_abierto)
                         if (navigation_abierto == "true") {
                             abrePrimeraVez()
                         }
@@ -120,17 +119,17 @@ class ListasActivity : AppCompatActivity() {
 
     }
 
-   /* override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            nav_1 -> {
-                Toast.makeText(this, "Opción 1", Toast.LENGTH_SHORT).show()
-            }
-            nav_2 -> Toast.makeText(this, "opción 2", Toast.LENGTH_SHORT).show()
-            nav_3 -> Toast.makeText(this, "Opción 3", Toast.LENGTH_SHORT).show()
-        }
-        drawer_layout.closeDrawer(GravityCompat.START)
-        return true
-    }*/
+    /* override fun onNavigationItemSelected(item: MenuItem): Boolean {
+         when (item.itemId) {
+             nav_1 -> {
+                 Toast.makeText(this, "Opción 1", Toast.LENGTH_SHORT).show()
+             }
+             nav_2 -> Toast.makeText(this, "opción 2", Toast.LENGTH_SHORT).show()
+             nav_3 -> Toast.makeText(this, "Opción 3", Toast.LENGTH_SHORT).show()
+         }
+         drawer_layout.closeDrawer(GravityCompat.START)
+         return true
+     }*/
 
     override fun onBackPressed() {
         if (mDrawer.isMenuVisible()) {
@@ -143,7 +142,7 @@ class ListasActivity : AppCompatActivity() {
     fun abrePrimeraVez() {
         val sp = getSharedPreferences("mispreferencias", 0)
         val primerAcceso = sp.getBoolean("abrePrimeraVez", true)
-        mFirebaseAnalytics.setUserProperty( "abrePrimeraVez", primerAcceso.toString() )
+        mFirebaseAnalytics.setUserProperty("abrePrimeraVez", primerAcceso.toString())
         if (primerAcceso) {
             mDrawer.openMenu()
             val e = sp.edit()

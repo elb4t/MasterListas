@@ -127,19 +127,9 @@ class ListasActivity : AppCompatActivity() {
                     }
                 })
 
+        RateMyApp(this).app_launched()
     }
 
-    /* override fun onNavigationItemSelected(item: MenuItem): Boolean {
-         when (item.itemId) {
-             nav_1 -> {
-                 Toast.makeText(this, "Opción 1", Toast.LENGTH_SHORT).show()
-             }
-             nav_2 -> Toast.makeText(this, "opción 2", Toast.LENGTH_SHORT).show()
-             nav_3 -> Toast.makeText(this, "Opción 3", Toast.LENGTH_SHORT).show()
-         }
-         drawer_layout.closeDrawer(GravityCompat.START)
-         return true
-     }*/
 
     override fun onBackPressed() {
         if (mDrawer.isMenuVisible()) {

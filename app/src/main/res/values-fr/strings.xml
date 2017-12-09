@@ -33,4 +33,9 @@
     <!--Transición-->
     <string name="transition_name_img">transition:IMG</string>
     <string name="transition_name_boton">transition:BOTON</string>
+    <string name="please_take_a_second_for_rate">S\'il vous plaît prendre une seconde pour le taux</string>
+    <string name="_1_love_masterlistas_please_rate_5_star_in_play_store">1. Love MasterListas, s\'il vous plaît noter 5 étoiles dans le Play Store</string>
+    <string name="_2_have_problems_please_contact_author_to_report_issue">2. Vous avez des problèmes, veuillez contacter l\'auteur pour signaler un problème</string>
+    <string name="contact_author">CONTACTER L\'AUTEUR</string>
+    <string name="rate_5_star">TARIF 5 ÉTOILES</string>
 </resources>

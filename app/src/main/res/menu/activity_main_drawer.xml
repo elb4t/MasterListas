@@ -27,6 +27,10 @@
                 android:id="@+id/nav_compartir_lista"
                 android:icon="@android:drawable/ic_menu_share"
                 android:title="Compartir Lista" />
+            <item
+                android:id="@+id/nav_compartir_logo"
+                android:icon="@android:drawable/ic_menu_share"
+                android:title="Compartir Logo" />
         </menu>
     </item>
 </menu>

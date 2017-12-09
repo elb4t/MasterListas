@@ -1,10 +1,13 @@
 package es.ellacer.masterlistas
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityOptionsCompat
+import android.support.v4.content.FileProvider
 import android.support.v4.util.Pair
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -21,6 +24,9 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.mxn.soul.flowingdrawer_core.ElasticDrawer
 import com.mxn.soul.flowingdrawer_core.FlowingDrawer
 import kotlinx.android.synthetic.main.content_listas.*
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 
 class ListasActivity : AppCompatActivity() {
@@ -49,7 +55,11 @@ class ListasActivity : AppCompatActivity() {
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_compartir -> compatirTexto("http://play.google.com/store/apps/details?id=" + packageName)
-                R.id.nav_compartir_lista -> compatirTexto("LISTA DE LA COMPRA: patatas, leche, huevos. ---- Compartido por: http://play.google.com/store/apps/details?id=" + getPackageName())
+                R.id.nav_compartir_lista -> compatirTexto("LISTA DE LA COMPRA: patatas, leche, huevos. ---- Compartido por: http://play.google.com/store/apps/details?id=" + packageName)
+                R.id.nav_compartir_logo -> {
+                    var bitmap = BitmapFactory.decodeResource(resources, R.drawable.logo)
+                    compatirBitmap(bitmap, "Compartido por: " + "http://play.google.com/store/apps/details?id=" + packageName)
+                }
                 else -> Toast.makeText(applicationContext, menuItem.title, Toast.LENGTH_SHORT).show()
             }
             false
@@ -155,5 +165,32 @@ class ListasActivity : AppCompatActivity() {
         i.type = "text/plain"
         i.putExtra(Intent.EXTRA_TEXT, texto)
         startActivity(Intent.createChooser(i, "Selecciona aplicación"))
+    }
+
+    fun compatirBitmap(bitmap: Bitmap, texto: String) {
+        // guardamos bitmap en el directorio cache
+        try {
+            var cachePath = File(cacheDir, "images")
+            cachePath.mkdirs()
+            var s = FileOutputStream("$cachePath/image.png")
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, s)
+            s.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        // Obtenemos la URI usando el FileProvider
+        var path = File(getCacheDir(), "images")
+        var file = File(path, "image.png")
+        var uri = FileProvider.getUriForFile(this, "es.ellacer.masterlistas.fileprovider", file)
+        //Compartimos la URI
+        if (uri != null) {
+            var i = Intent(Intent.ACTION_SEND)
+            i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            // temp permission for receiving app to read this file
+            i.setDataAndType(uri, getContentResolver().getType(uri))
+            i.putExtra(Intent.EXTRA_STREAM, uri)
+            i.putExtra(Intent.EXTRA_TEXT, texto)
+            startActivity(Intent.createChooser(i, "Selecciona aplicación"))
+        }
     }
 }

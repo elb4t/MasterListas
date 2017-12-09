@@ -19,6 +19,16 @@
         <activity android:name="es.ellacer.masterlistas.ListasActivity" />
         <activity android:name="es.ellacer.masterlistas.RegistroUsuarioActivity" />
         <activity android:name="es.ellacer.masterlistas.DetalleListaActivity"></activity>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="es.ellacer.masterlistas.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
     </application>
 
 </manifest>

@@ -60,6 +60,7 @@ class ListasActivity : AppCompatActivity() {
                     var bitmap = BitmapFactory.decodeResource(resources, R.drawable.logo)
                     compatirBitmap(bitmap, "Compartido por: " + "http://play.google.com/store/apps/details?id=" + packageName)
                 }
+                R.id.nav_compartir_desarrollador -> compatirTexto("https://play.google.com/store/apps/dev?id=7027410910970713274")
                 else -> Toast.makeText(applicationContext, menuItem.title, Toast.LENGTH_SHORT).show()
             }
             false

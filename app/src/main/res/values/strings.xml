@@ -40,4 +40,7 @@
     <string name="_2_have_problems_please_contact_author_to_report_issue">2. Have problems, please contact author to report issue</string>
     <string name="contact_author">CONTACT AUTHOR</string>
     <string name="rate_5_star">RATE 5 STAR</string>
+    <string name="compartir_lista">Share List</string>
+    <string name="compartir_logo">Share Logo</string>
+    <string name="compartir_desarrollador">Share Developer</string>
 </resources>

@@ -38,4 +38,7 @@
     <string name="_2_have_problems_please_contact_author_to_report_issue">2. Tiene problemas, póngase en contacto con el autor para informar el problema</string>
     <string name="contact_author">CONTACTAR CON AUTOR</string>
     <string name="rate_5_star">VOTA 5 ESTRELLAS</string>
+    <string name="compartir_lista">Compartir Lista</string>
+    <string name="compartir_logo">Compartir Logo</string>
+    <string name="compartir_desarrollador">Compartir Desarrollador</string>
 </resources>

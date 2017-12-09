@@ -1,8 +1,10 @@
 package es.ellacer.masterlistas
 
+import android.app.Dialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
@@ -16,6 +18,7 @@ import android.support.v7.widget.Toolbar
 import android.transition.TransitionInflater
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -42,6 +45,7 @@ class ListasActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listas)
+        showCrossPromoDialog()
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
@@ -183,5 +187,19 @@ class ListasActivity : AppCompatActivity() {
             i.putExtra(Intent.EXTRA_TEXT, texto)
             startActivity(Intent.createChooser(i, "Selecciona aplicación"))
         }
+    }
+
+    private fun showCrossPromoDialog() {
+        val dialog = Dialog(this, R.style.Theme_AppCompat)
+        dialog.setContentView(R.layout.dialog_crosspromotion)
+        dialog.setCancelable(true)
+        val buttonCancel: Button = dialog.findViewById(R.id.buttonCancel)
+        buttonCancel.setOnClickListener{ dialog.dismiss() }
+        val boton: Button = dialog.findViewById(R.id.buttonDescargar)
+        boton.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?" + "id=com.mimisoftware.emojicreatoremoticonosemoticones")))
+            dialog.dismiss()
+        }
+        dialog.show()
     }
 }

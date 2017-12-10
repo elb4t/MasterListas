@@ -19,6 +19,8 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import com.facebook.ads.AdSettings
+import com.facebook.ads.AdSize
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.reward.RewardItem
 import com.google.android.gms.ads.reward.RewardedVideoAd
@@ -48,6 +50,7 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener {
     private lateinit var adView: AdView
     private lateinit var intersticialAd: InterstitialAd
     private lateinit var mRewardedVideoAd: RewardedVideoAd
+    private lateinit var adViewFacebook: com.facebook.ads.AdView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +63,7 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener {
 
         intersticialAd.adListener = object : AdListener() {
             override fun onAdClosed() {
-                intersticialAd.loadAd(AdRequest.Builder().build())
+                intersticialAd.loadAd(AdRequest.Builder().addTestDevice("EF7FB31EE1E155863F06CF1D12FB1B68").build())
             }
         }
 
@@ -69,13 +72,16 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener {
 
         // Banner Ad
         adView = findViewById(R.id.adView)
-        val adRequest = AdRequest.Builder().build()
+        val adRequest = AdRequest.Builder().addTestDevice("EF7FB31EE1E155863F06CF1D12FB1B68").build()
         adView.loadAd(adRequest)
 
         // Video reward
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this)
         mRewardedVideoAd.rewardedVideoAdListener = this
-        mRewardedVideoAd.loadAd(getString(R.string.adMobIdVideoBonificado), AdRequest.Builder().build())
+        mRewardedVideoAd.loadAd(getString(R.string.adMobIdVideoBonificado), AdRequest.Builder().addTestDevice("EF7FB31EE1E155863F06CF1D12FB1B68").build())
+
+        // Banner Facebook
+        crearAnuncioBannerFacebook()
 
         // Firebase Analytics
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
@@ -183,6 +189,12 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener {
         }
     }
 
+    override fun onDestroy() {
+        if (adViewFacebook != null)
+            adViewFacebook.destroy()
+        super.onDestroy()
+    }
+
     fun abrePrimeraVez() {
         val sp = getSharedPreferences("mispreferencias", 0)
         val primerAcceso = sp.getBoolean("abrePrimeraVez", true)
@@ -240,6 +252,15 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener {
             dialog.dismiss()
         }
         dialog.show()
+    }
+
+    fun crearAnuncioBannerFacebook(){
+        adViewFacebook = com.facebook.ads.AdView(this, getString(R.string.idBannerFacebook), AdSize.BANNER_320_50)
+        AdSettings.addTestDevice("8613d68ce24be2b3e69131393d439671")
+        AdSettings.addTestDevice("54702c096a73443cc79a60965f5fc7da")
+        adViewContainer.addView(adViewFacebook)
+        adViewFacebook.loadAd()
+        Log.e("FACEBOOK","ADS LOADED")
     }
 
     // Metodos listener video rewarded

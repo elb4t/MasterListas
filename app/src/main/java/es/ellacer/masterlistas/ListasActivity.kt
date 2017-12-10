@@ -68,6 +68,7 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
     private var serviceBilling: IInAppBillingService? = null
     private lateinit var serviceConnection: ServiceConnection
     private val ID_ARTICULO = "es.ellacer.masterlistas.producto"
+    private val ID_SUSCRIPCION = "es.ellacer.masterlistas.suscripcio"
     private val INAPP_BILLING = 1
     private val developerPayLoad = "masterlistasPay"
 
@@ -129,6 +130,7 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
                 }
                 R.id.nav_compartir_desarrollador -> compatirTexto("https://play.google.com/store/apps/dev?id=7027410910970713274")
                 R.id.nav_articulo_no_recurrente -> comprarProducto()
+                R.id.nav_suscripcion -> comprarSuscripcion(this)
                 else -> Toast.makeText(applicationContext, menuItem.title, Toast.LENGTH_SHORT).show()
             }
             false
@@ -344,9 +346,11 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
     override fun onError(p0: Ad?, adError: AdError) {
         Toast.makeText(this, "Error: ${adError.errorMessage}", Toast.LENGTH_LONG).show()
     }
+
     override fun onAdLoaded(p0: Ad?) {
         intersticialFacebookAd.show()
     }
+
     override fun onInterstitialDisplayed(p0: Ad?) {}
     override fun onAdClicked(p0: Ad?) {}
     override fun onInterstitialDismissed(p0: Ad?) {}
@@ -356,12 +360,15 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
     override fun onRewardedVideoAdLoaded() {
         Toast.makeText(this, "Vídeo Bonificado cargado", Toast.LENGTH_SHORT).show()
     }
+
     override fun onRewardedVideoAdClosed() {
         mRewardedVideoAd.loadAd(getString(R.string.adMobIdVideoBonificado), AdRequest.Builder().build())
     }
+
     override fun onRewarded(rewardItem: RewardItem) {
         Toast.makeText(this, "onRewarded: moneda virtual: ${rewardItem.type}  aumento: ${rewardItem.amount}", Toast.LENGTH_SHORT).show()
     }
+
     override fun onRewardedVideoAdLeftApplication() {}
     override fun onRewardedVideoAdOpened() {}
     override fun onRewardedVideoStarted() {}
@@ -388,13 +395,13 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
             var buyIntentBundle: Bundle? = null
             try {
                 buyIntentBundle = serviceBilling!!.getBuyIntent(3, packageName, ID_ARTICULO, "inapp", developerPayLoad)
-            } catch ( e: RemoteException) {
+            } catch (e: RemoteException) {
                 e.printStackTrace()
             }
             var pendingIntent: PendingIntent = buyIntentBundle!!.getParcelable("BUY_INTENT")
             try {
                 if (pendingIntent != null) {
-                    startIntentSenderForResult(pendingIntent.intentSender, INAPP_BILLING,  Intent(), 0, 0, 0)
+                    startIntentSenderForResult(pendingIntent.intentSender, INAPP_BILLING, Intent(), 0, 0, 0)
                 }
             } catch (e: IntentSender.SendIntentException) {
                 e.printStackTrace()
@@ -407,11 +414,11 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        when (requestCode){
+        when (requestCode) {
             INAPP_BILLING -> {
                 var responseCode: Int = data.getIntExtra("RESPONSE_CODE", 0)
-                var purchaseData: String = data.getStringExtra("INAPP_PURCHASE_DATA")
-                var dataSignature: String = data.getStringExtra("INAPP_DATA_SIGNATURE")
+                var purchaseData: String = data.getStringExtra("INAPP_PURCHASE_DATA") ?: ""
+                var dataSignature: String = data.getStringExtra("INAPP_DATA_SIGNATURE") ?: ""
                 if (resultCode == Activity.RESULT_OK) {
                     try {
                         var jo: JSONObject = JSONObject(purchaseData)
@@ -421,6 +428,8 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
                         if (sku.equals(ID_ARTICULO)) {
                             Toast.makeText(this, "Compra completada", Toast.LENGTH_LONG).show()
                             backToBuy(purchaseToken)
+                        }else if (sku.equals(ID_SUSCRIPCION)) {
+                            Toast.makeText(this, "Suscrición correcta", Toast.LENGTH_LONG).show()
                         }
                     } catch (e: JSONException) {
                         e.printStackTrace()
@@ -439,5 +448,26 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
             }
 
         }
+    }
+
+    fun comprarSuscripcion( activity: Activity)
+    {
+        if (serviceBilling != null) {
+            var buyIntentBundle:Bundle? = null
+            try {
+                buyIntentBundle = serviceBilling!!.getBuyIntent(3, activity.packageName, ID_SUSCRIPCION, "subs", developerPayLoad)
+            } catch ( e: RemoteException) {
+                e.printStackTrace()
+            }
+            assert(buyIntentBundle != null)
+            var pendingIntent: PendingIntent = buyIntentBundle!!.getParcelable ("BUY_INTENT")
+            try {
+                assert(pendingIntent != null)
+                activity.startIntentSenderForResult(pendingIntent.intentSender, INAPP_BILLING,  Intent (), 0, 0, 0)
+            } catch ( e: IntentSender.SendIntentException) {
+                e.printStackTrace()
+            }
+        } else {
+            Toast.makeText(activity, "Servicio de suscripción no disponible", Toast.LENGTH_LONG).show(); }
     }
 }

@@ -39,6 +39,10 @@
                 android:id="@+id/nav_articulo_no_recurrente"
                 android:icon="@android:drawable/ic_menu_share"
                 android:title="@string/comprar_art_culo" />
+            <item
+                android:id="@+id/nav_suscripcion"
+                android:icon="@android:drawable/ic_menu_share"
+                android:title="Comprar Suscripción" />
         </menu>
     </item>
 </menu>

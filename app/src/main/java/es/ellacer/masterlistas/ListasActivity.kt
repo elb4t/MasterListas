@@ -1,11 +1,15 @@
 package es.ellacer.masterlistas
 
+import android.app.Activity
 import android.app.Dialog
-import android.content.Intent
+import android.app.PendingIntent
+import android.content.*
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.os.IBinder
+import android.os.RemoteException
 import android.support.design.widget.NavigationView
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.FileProvider
@@ -19,6 +23,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
+import com.android.vending.billing.IInAppBillingService
 import com.facebook.ads.*
 import com.facebook.ads.AdSize
 import com.google.android.gms.ads.*
@@ -35,6 +40,8 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.mxn.soul.flowingdrawer_core.ElasticDrawer
 import com.mxn.soul.flowingdrawer_core.FlowingDrawer
 import kotlinx.android.synthetic.main.content_listas.*
+import org.json.JSONException
+import org.json.JSONObject
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -56,6 +63,14 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
     private lateinit var adViewFacebook: com.facebook.ads.AdView
     private lateinit var intersticialFacebookAd: com.facebook.ads.InterstitialAd
     private lateinit var nativeFacebookAd: com.facebook.ads.NativeAd
+
+    // Billing In-App
+    private var serviceBilling: IInAppBillingService? = null
+    private lateinit var serviceConnection: ServiceConnection
+    private val ID_ARTICULO = "org.example.masterlistas.producto"
+    private val INAPP_BILLING = 1
+    private val developerPayLoad = "masterlistasPay"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,6 +128,7 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
                     compatirBitmap(bitmap, "Compartido por: " + "http://play.google.com/store/apps/details?id=" + packageName)
                 }
                 R.id.nav_compartir_desarrollador -> compatirTexto("https://play.google.com/store/apps/dev?id=7027410910970713274")
+                R.id.nav_articulo_no_recurrente -> comprarProducto()
                 else -> Toast.makeText(applicationContext, menuItem.title, Toast.LENGTH_SHORT).show()
             }
             false
@@ -185,6 +201,9 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
                 })
 
         RateMyApp(this).app_launched()
+
+        // In-app billing
+        serviceConectInAppBilling()
     }
 
 
@@ -277,9 +296,9 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
         intersticialFacebookAd.loadAd()
     }
 
-    fun crearAnuncioNativoFacebook(){
+    fun crearAnuncioNativoFacebook() {
         nativeFacebookAd = NativeAd(this, getString(R.string.idNativoFacebook))
-        nativeFacebookAd.setAdListener(object : com.facebook.ads.AdListener{
+        nativeFacebookAd.setAdListener(object : com.facebook.ads.AdListener {
             override fun onAdClicked(p0: Ad?) {}
             override fun onError(p0: Ad?, p1: AdError?) {}
             override fun onAdLoaded(p0: Ad?) {
@@ -315,6 +334,7 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
 
                 nativeFacebookAd.registerViewForInteraction(nativeAdContainer, clickableView)
             }
+
             override fun onLoggingImpression(p0: Ad?) {}
         })
         nativeFacebookAd.loadAd()
@@ -324,44 +344,88 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
     override fun onError(p0: Ad?, adError: AdError) {
         Toast.makeText(this, "Error: ${adError.errorMessage}", Toast.LENGTH_LONG).show()
     }
-
     override fun onAdLoaded(p0: Ad?) {
         intersticialFacebookAd.show()
     }
-    override fun onInterstitialDisplayed(p0: Ad?) {
-    }
-
-    override fun onAdClicked(p0: Ad?) {
-    }
-
-    override fun onInterstitialDismissed(p0: Ad?) {
-    }
-
-    override fun onLoggingImpression(p0: Ad?) {
-    }
+    override fun onInterstitialDisplayed(p0: Ad?) {}
+    override fun onAdClicked(p0: Ad?) {}
+    override fun onInterstitialDismissed(p0: Ad?) {}
+    override fun onLoggingImpression(p0: Ad?) {}
 
     // Metodos listener video rewarded
     override fun onRewardedVideoAdLoaded() {
         Toast.makeText(this, "Vídeo Bonificado cargado", Toast.LENGTH_SHORT).show()
     }
-
     override fun onRewardedVideoAdClosed() {
         mRewardedVideoAd.loadAd(getString(R.string.adMobIdVideoBonificado), AdRequest.Builder().build())
     }
-
     override fun onRewarded(rewardItem: RewardItem) {
         Toast.makeText(this, "onRewarded: moneda virtual: ${rewardItem.type}  aumento: ${rewardItem.amount}", Toast.LENGTH_SHORT).show()
     }
+    override fun onRewardedVideoAdLeftApplication() {}
+    override fun onRewardedVideoAdOpened() {}
+    override fun onRewardedVideoStarted() {}
+    override fun onRewardedVideoAdFailedToLoad(p0: Int) {}
 
-    override fun onRewardedVideoAdLeftApplication() {
+    // In-app billing
+    fun serviceConectInAppBilling() {
+        serviceConnection = object : ServiceConnection {
+            override fun onServiceDisconnected(p0: ComponentName?) {
+                serviceBilling = null
+            }
+
+            override fun onServiceConnected(p0: ComponentName?, service: IBinder?) {
+                serviceBilling = IInAppBillingService.Stub.asInterface(service)
+            }
+        }
+        var serviceIntent = Intent("com.android.vending.billing.InAppBillingService.BIND")
+        serviceIntent.`package` = "com.android.vending"
+        bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE)
     }
 
-    override fun onRewardedVideoAdOpened() {
+    fun comprarProducto() {
+        if (serviceBilling != null) {
+            var buyIntentBundle: Bundle? = null
+            try {
+                buyIntentBundle = serviceBilling!!.getBuyIntent(3, packageName, ID_ARTICULO, "inapp", developerPayLoad)
+            } catch ( e: RemoteException) {
+                e.printStackTrace()
+            }
+            var pendingIntent: PendingIntent = buyIntentBundle!!.getParcelable("BUY_INTENT")
+            try {
+                if (pendingIntent != null) {
+                    startIntentSenderForResult(pendingIntent.intentSender, INAPP_BILLING,  Intent(), 0, 0, 0)
+                }
+            } catch (e: IntentSender.SendIntentException) {
+                e.printStackTrace()
+            }
+        } else {
+            Toast.makeText(this, "InApp Billing service not available", Toast.LENGTH_LONG).show()
+        }
     }
 
-    override fun onRewardedVideoStarted() {
-    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        super.onActivityResult(requestCode, resultCode, data)
 
-    override fun onRewardedVideoAdFailedToLoad(p0: Int) {
+        when (requestCode){
+            INAPP_BILLING -> {
+                var responseCode: Int = data.getIntExtra("RESPONSE_CODE", 0)
+                var purchaseData: String = data.getStringExtra("INAPP_PURCHASE_DATA")
+                var dataSignature: String = data.getStringExtra("INAPP_DATA_SIGNATURE")
+                if (resultCode == Activity.RESULT_OK) {
+                    try {
+                        var jo: JSONObject = JSONObject(purchaseData)
+                        var sku: String = jo.getString("productId")
+                        var developerPayload: String = jo.getString("developerPayload")
+                        var purchaseToken: String = jo.getString("purchaseToken")
+                        if (sku.equals(ID_ARTICULO)) {
+                            Toast.makeText(this, "Compra completada", Toast.LENGTH_LONG).show()
+                        }
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+        }
     }
 }

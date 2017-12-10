@@ -19,10 +19,10 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.InterstitialAd
+import com.google.android.gms.ads.*
+import com.google.android.gms.ads.reward.RewardItem
+import com.google.android.gms.ads.reward.RewardedVideoAd
+import com.google.android.gms.ads.reward.RewardedVideoAdListener
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -35,7 +35,7 @@ import java.io.FileOutputStream
 import java.io.IOException
 
 
-class ListasActivity : AppCompatActivity() {
+class ListasActivity : AppCompatActivity(), RewardedVideoAdListener {
 
     private lateinit var mDrawer: FlowingDrawer
     private lateinit var adapter: RecyclerView.Adapter<*>
@@ -47,11 +47,13 @@ class ListasActivity : AppCompatActivity() {
 
     private lateinit var adView: AdView
     private lateinit var intersticialAd: InterstitialAd
+    private lateinit var mRewardedVideoAd: RewardedVideoAd
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listas)
 
+        // Intersticial Ad
         intersticialAd = InterstitialAd(this)
         intersticialAd.adUnitId = getString(R.string.adMobIdIntersticial)
         intersticialAd.loadAd(AdRequest.Builder().build())
@@ -62,12 +64,20 @@ class ListasActivity : AppCompatActivity() {
             }
         }
 
+        // Cross promotion
         showCrossPromoDialog()
 
+        // Banner Ad
         adView = findViewById(R.id.adView)
         val adRequest = AdRequest.Builder().build()
         adView.loadAd(adRequest)
 
+        // Video reward
+        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this)
+        mRewardedVideoAd.rewardedVideoAdListener = this
+        mRewardedVideoAd.loadAd(getString(R.string.adMobIdVideoBonificado), AdRequest.Builder().build())
+
+        // Firebase Analytics
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         // Toolbar
@@ -79,6 +89,10 @@ class ListasActivity : AppCompatActivity() {
         val navigationView = findViewById<View>(R.id.vNavigation) as NavigationView
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
+                R.id.nav_1 ->{
+                    if (mRewardedVideoAd.isLoaded)
+                        mRewardedVideoAd.show()
+                }
                 R.id.nav_compartir -> compatirTexto("http://play.google.com/store/apps/details?id=" + packageName)
                 R.id.nav_compartir_lista -> compatirTexto("LISTA DE LA COMPRA: patatas, leche, huevos. ---- Compartido por: http://play.google.com/store/apps/details?id=" + packageName)
                 R.id.nav_compartir_logo -> {
@@ -226,5 +240,29 @@ class ListasActivity : AppCompatActivity() {
             dialog.dismiss()
         }
         dialog.show()
+    }
+
+    // Metodos listener video rewarded
+    override fun onRewardedVideoAdLoaded() {
+        Toast.makeText(this, "Vídeo Bonificado cargado", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onRewardedVideoAdClosed() {
+        mRewardedVideoAd.loadAd(getString(R.string.adMobIdVideoBonificado), AdRequest.Builder().build())
+    }
+
+    override fun onRewarded(rewardItem: RewardItem) {
+        Toast.makeText(this, "onRewarded: moneda virtual: ${rewardItem.type}  aumento: ${rewardItem.amount}", Toast.LENGTH_SHORT).show()
+    }
+    override fun onRewardedVideoAdLeftApplication() {
+    }
+
+    override fun onRewardedVideoAdOpened() {
+    }
+
+    override fun onRewardedVideoStarted() {
+    }
+
+    override fun onRewardedVideoAdFailedToLoad(p0: Int) {
     }
 }

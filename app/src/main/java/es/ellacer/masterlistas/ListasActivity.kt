@@ -71,30 +71,15 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
     private val ID_SUSCRIPCION = "es.ellacer.masterlistas.suscripcio"
     private val INAPP_BILLING = 1
     private val developerPayLoad = "masterlistasPay"
+    private var showInterticial: Boolean = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listas)
 
-        // Intersticial Ad
-        intersticialAd = InterstitialAd(this)
-        intersticialAd.adUnitId = getString(R.string.adMobIdIntersticial)
-        intersticialAd.loadAd(AdRequest.Builder().build())
-
-        intersticialAd.adListener = object : AdListener() {
-            override fun onAdClosed() {
-                intersticialAd.loadAd(AdRequest.Builder().addTestDevice("EF7FB31EE1E155863F06CF1D12FB1B68").build())
-            }
-        }
-
         // Cross promotion
         showCrossPromoDialog()
-
-        // Banner Ad
-        adView = findViewById(R.id.adView)
-        val adRequest = AdRequest.Builder().addTestDevice("EF7FB31EE1E155863F06CF1D12FB1B68").build()
-        adView.loadAd(adRequest)
 
         // Video reward
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this)
@@ -431,6 +416,7 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
                         var purchaseToken: String = jo.getString("purchaseToken")
                         if (sku.equals(ID_ARTICULO)) {
                             Toast.makeText(this, "Compra completada", Toast.LENGTH_LONG).show()
+                            setAds(false)
                             backToBuy(purchaseToken)
                         } else if (sku.equals(ID_SUSCRIPCION)) {
                             Toast.makeText(this, "Suscrición correcta", Toast.LENGTH_LONG).show()
@@ -543,13 +529,13 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
             }
             var response: Int = ownedItemsInApp!!.getInt("RESPONSE_CODE")
             System.out.println(response)
-            Log.e("_______","-----------------------------")
+            Log.e("_______", "-----------------------------")
             if (response == 0) {
-                var ownedSkus: ArrayList<String>  = ownedItemsInApp.getStringArrayList ("INAPP_PURCHASE_ITEM_LIST")
-                var purchaseDataList:ArrayList<String>  = ownedItemsInApp.getStringArrayList ("INAPP_PURCHASE_DATA_LIST")
-                var signatureList:ArrayList<String>  = ownedItemsInApp.getStringArrayList ("INAPP_DATA_SIGNATURE_LIST")
-                var continuationToken: String = ownedItemsInApp.getString ("INAPP_CONTINUATION_TOKEN") ?: ""
-                for ( i in purchaseDataList.indices) {
+                var ownedSkus: ArrayList<String> = ownedItemsInApp.getStringArrayList("INAPP_PURCHASE_ITEM_LIST")
+                var purchaseDataList: ArrayList<String> = ownedItemsInApp.getStringArrayList("INAPP_PURCHASE_DATA_LIST")
+                var signatureList: ArrayList<String> = ownedItemsInApp.getStringArrayList("INAPP_DATA_SIGNATURE_LIST")
+                var continuationToken: String = ownedItemsInApp.getString("INAPP_CONTINUATION_TOKEN") ?: ""
+                for (i in purchaseDataList.indices) {
                     var purchaseData: String = purchaseDataList[i]
                     var signature: String = signatureList[i]
                     var sku: String = ownedSkus[i]
@@ -558,6 +544,9 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
                     System.out.println("Inapp Sku: " + sku)
                     if (sku.equals(ID_ARTICULO)) {
                         Toast.makeText(this, "Inapp comprado: $sku el dia $purchaseData", Toast.LENGTH_LONG).show()
+                        setAds(false)
+                    } else{
+                        setAds(true)
                     }
                 }
             }
@@ -574,13 +563,13 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
             }
             var response: Int = ownedItemsInApp!!.getInt("RESPONSE_CODE")
             System.out.println(response)
-            Log.e("_______","-----------------------------")
+            Log.e("_______", "-----------------------------")
             if (response == 0) {
-                var ownedSkus: ArrayList<String>  = ownedItemsInApp.getStringArrayList ("INAPP_PURCHASE_ITEM_LIST")
-                var purchaseDataList:ArrayList<String>  = ownedItemsInApp.getStringArrayList ("INAPP_PURCHASE_DATA_LIST")
-                var signatureList:ArrayList<String>  = ownedItemsInApp.getStringArrayList ("INAPP_DATA_SIGNATURE_LIST")
-                var continuationToken: String = ownedItemsInApp.getString ("INAPP_CONTINUATION_TOKEN") ?: ""
-                for ( i in purchaseDataList.indices) {
+                var ownedSkus: ArrayList<String> = ownedItemsInApp.getStringArrayList("INAPP_PURCHASE_ITEM_LIST")
+                var purchaseDataList: ArrayList<String> = ownedItemsInApp.getStringArrayList("INAPP_PURCHASE_DATA_LIST")
+                var signatureList: ArrayList<String> = ownedItemsInApp.getStringArrayList("INAPP_DATA_SIGNATURE_LIST")
+                var continuationToken: String = ownedItemsInApp.getString("INAPP_CONTINUATION_TOKEN") ?: ""
+                for (i in purchaseDataList.indices) {
                     var purchaseData: String = purchaseDataList[i]
                     var signature: String = signatureList[i]
                     var sku: String = ownedSkus[i]
@@ -592,6 +581,30 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
                     }
                 }
             }
+        }
+    }
+
+    fun setAds(adsEnabled: Boolean) {
+        if (adsEnabled) {
+            // Banner Ad
+            adView = findViewById(R.id.adView)
+            val adRequest = AdRequest.Builder().addTestDevice("EF7FB31EE1E155863F06CF1D12FB1B68").build()
+            adView.loadAd(adRequest)
+
+            // Intersticial Ad
+            intersticialAd = InterstitialAd(this)
+            intersticialAd.adUnitId = getString(R.string.adMobIdIntersticial)
+            intersticialAd.loadAd(AdRequest.Builder().addTestDevice("EF7FB31EE1E155863F06CF1D12FB1B68").build())
+
+            intersticialAd.adListener = object : AdListener() {
+                override fun onAdClosed() {
+                    intersticialAd.loadAd(AdRequest.Builder().addTestDevice("EF7FB31EE1E155863F06CF1D12FB1B68").build())
+                }
+            }
+            showInterticial = true
+        } else {
+            showInterticial = false
+            adView.visibility = View.GONE
         }
     }
 }

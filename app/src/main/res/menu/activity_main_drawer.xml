@@ -43,6 +43,10 @@
                 android:id="@+id/nav_suscripcion"
                 android:icon="@android:drawable/ic_menu_share"
                 android:title="Comprar Suscripción" />
+            <item
+                android:id="@+id/nav_consulta_inapps_disponibles"
+                android:icon="@android:drawable/ic_menu_share"
+                android:title="Artículos disponibles" />
         </menu>
     </item>
 </menu>

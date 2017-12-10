@@ -131,6 +131,7 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
                 R.id.nav_compartir_desarrollador -> compatirTexto("https://play.google.com/store/apps/dev?id=7027410910970713274")
                 R.id.nav_articulo_no_recurrente -> comprarProducto()
                 R.id.nav_suscripcion -> comprarSuscripcion(this)
+                R.id.nav_consulta_inapps_disponibles -> getInAppInformationOfProducts()
                 else -> Toast.makeText(applicationContext, menuItem.title, Toast.LENGTH_SHORT).show()
             }
             false
@@ -450,8 +451,7 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
         }
     }
 
-    fun comprarSuscripcion( activity: Activity)
-    {
+    fun comprarSuscripcion( activity: Activity) {
         if (serviceBilling != null) {
             var buyIntentBundle:Bundle? = null
             try {
@@ -469,5 +469,34 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
             }
         } else {
             Toast.makeText(activity, "Servicio de suscripción no disponible", Toast.LENGTH_LONG).show(); }
+    }
+
+    fun getInAppInformationOfProducts() {
+        val skuList = ArrayList<String>()
+        skuList.add(ID_ARTICULO)
+        val querySkus = Bundle()
+        querySkus.putStringArrayList("ITEM_ID_LIST", skuList)
+        val skuDetails: Bundle
+        val responseList: ArrayList<String>?
+        try {
+            skuDetails = serviceBilling!!.getSkuDetails(3, packageName, "inapp", querySkus)
+            val response = skuDetails.getInt("RESPONSE_CODE")
+            if (response == 0) {
+                responseList = skuDetails.getStringArrayList("DETAILS_LIST")
+                assert(responseList != null)
+                for (thisResponse in responseList!!) {
+                    val `object` = JSONObject(thisResponse)
+                    val ref = `object`.getString("productId")
+                    println("InApp Reference: " + ref)
+                    val price = `object`.getString("price")
+                    println("InApp Price: " + price)
+                }
+            }
+        } catch (e: RemoteException) {
+            e.printStackTrace()
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+
     }
 }

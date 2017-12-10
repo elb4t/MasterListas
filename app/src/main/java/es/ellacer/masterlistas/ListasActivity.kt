@@ -385,6 +385,7 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
 
             override fun onServiceConnected(p0: ComponentName?, service: IBinder?) {
                 serviceBilling = IInAppBillingService.Stub.asInterface(service)
+                checkPurchasedInAppProducts()
             }
         }
         var serviceIntent = Intent("com.android.vending.billing.InAppBillingService.BIND")
@@ -430,7 +431,7 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
                         if (sku.equals(ID_ARTICULO)) {
                             Toast.makeText(this, "Compra completada", Toast.LENGTH_LONG).show()
                             backToBuy(purchaseToken)
-                        }else if (sku.equals(ID_SUSCRIPCION)) {
+                        } else if (sku.equals(ID_SUSCRIPCION)) {
                             Toast.makeText(this, "Suscrición correcta", Toast.LENGTH_LONG).show()
                         }
                     } catch (e: JSONException) {
@@ -452,20 +453,20 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
         }
     }
 
-    fun comprarSuscripcion( activity: Activity) {
+    fun comprarSuscripcion(activity: Activity) {
         if (serviceBilling != null) {
-            var buyIntentBundle:Bundle? = null
+            var buyIntentBundle: Bundle? = null
             try {
                 buyIntentBundle = serviceBilling!!.getBuyIntent(3, activity.packageName, ID_SUSCRIPCION, "subs", developerPayLoad)
-            } catch ( e: RemoteException) {
+            } catch (e: RemoteException) {
                 e.printStackTrace()
             }
             assert(buyIntentBundle != null)
-            var pendingIntent: PendingIntent = buyIntentBundle!!.getParcelable ("BUY_INTENT")
+            var pendingIntent: PendingIntent = buyIntentBundle!!.getParcelable("BUY_INTENT")
             try {
                 assert(pendingIntent != null)
-                activity.startIntentSenderForResult(pendingIntent.intentSender, INAPP_BILLING,  Intent (), 0, 0, 0)
-            } catch ( e: IntentSender.SendIntentException) {
+                activity.startIntentSenderForResult(pendingIntent.intentSender, INAPP_BILLING, Intent(), 0, 0, 0)
+            } catch (e: IntentSender.SendIntentException) {
                 e.printStackTrace()
             }
         } else {
@@ -529,5 +530,36 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
             e.printStackTrace()
         }
 
+    }
+
+    fun checkPurchasedInAppProducts() {
+        var ownedItemsInApp: Bundle? = null
+        if (serviceBilling != null) {
+            try {
+                ownedItemsInApp = serviceBilling!!.getPurchases(3, packageName, "inapp", null)
+            } catch (e: RemoteException) {
+                e.printStackTrace()
+            }
+            var response: Int = ownedItemsInApp!!.getInt("RESPONSE_CODE")
+            System.out.println(response)
+            Log.e("_______","-----------------------------")
+            if (response == 0) {
+                var ownedSkus: ArrayList<String>  = ownedItemsInApp.getStringArrayList ("INAPP_PURCHASE_ITEM_LIST")
+                var purchaseDataList:ArrayList<String>  = ownedItemsInApp.getStringArrayList ("INAPP_PURCHASE_DATA_LIST")
+                var signatureList:ArrayList<String>  = ownedItemsInApp.getStringArrayList ("INAPP_DATA_SIGNATURE_LIST")
+                var continuationToken: String = ownedItemsInApp.getString ("INAPP_CONTINUATION_TOKEN") ?: ""
+                for ( i in purchaseDataList.indices) {
+                    var purchaseData: String = purchaseDataList[i]
+                    var signature: String = signatureList[i]
+                    var sku: String = ownedSkus[i]
+                    System.out.println("Inapp Purchase data: " + purchaseData)
+                    System.out.println("Inapp Signature: " + signature)
+                    System.out.println("Inapp Sku: " + sku)
+                    if (sku.equals(ID_ARTICULO)) {
+                        Toast.makeText(this, "Inapp comprado: $sku el dia $purchaseData", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+        }
     }
 }

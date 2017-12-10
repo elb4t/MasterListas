@@ -16,9 +16,9 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.transition.TransitionInflater
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
-import android.widget.Toast
+import android.widget.*
 import com.facebook.ads.*
 import com.facebook.ads.AdSize
 import com.google.android.gms.ads.*
@@ -55,6 +55,7 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
     private lateinit var mRewardedVideoAd: RewardedVideoAd
     private lateinit var adViewFacebook: com.facebook.ads.AdView
     private lateinit var intersticialFacebookAd: com.facebook.ads.InterstitialAd
+    private lateinit var nativeFacebookAd: com.facebook.ads.NativeAd
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,6 +87,7 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
 
         // Banner Facebook
         crearAnuncioBannerFacebook()
+        crearAnuncioNativoFacebook()
 
         // Firebase Analytics
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
@@ -273,6 +275,49 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
         AdSettings.addTestDevice("54702c096a73443cc79a60965f5fc7da")
         intersticialFacebookAd.setAdListener(this)
         intersticialFacebookAd.loadAd()
+    }
+
+    fun crearAnuncioNativoFacebook(){
+        nativeFacebookAd = NativeAd(this, getString(R.string.idNativoFacebook))
+        nativeFacebookAd.setAdListener(object : com.facebook.ads.AdListener{
+            override fun onAdClicked(p0: Ad?) {}
+            override fun onError(p0: Ad?, p1: AdError?) {}
+            override fun onAdLoaded(p0: Ad?) {
+                if (nativeFacebookAd != null)
+                    nativeFacebookAd.unregisterView()
+
+                val nativeAdContainer: LinearLayout = findViewById(R.id.native_ad_container)
+                val inflater: LayoutInflater = LayoutInflater.from(applicationContext)
+                val adView: LinearLayout = inflater.inflate(R.layout.native_ad, nativeAdContainer, false) as LinearLayout
+                nativeAdContainer.addView(adView)
+
+                val nativeAdIcon: ImageView = findViewById(R.id.native_ad_icon)
+                val nativeAdTitle: TextView = findViewById(R.id.native_ad_title)
+                val nativeAdMadia: MediaView = findViewById(R.id.native_ad_media)
+                val nativeAdSocialCpntext: TextView = findViewById(R.id.native_ad_social_context)
+                val nativeAdBody: TextView = findViewById(R.id.native_ad_body)
+                val nativeAdCallToAction: Button = findViewById(R.id.native_ad_call_to_action)
+
+                nativeAdTitle.text = nativeFacebookAd.adTitle
+                nativeAdSocialCpntext.text = nativeFacebookAd.adSocialContext
+                nativeAdBody.text = nativeFacebookAd.adBody
+                val adIcon: NativeAd.Image = nativeFacebookAd.adIcon
+                NativeAd.downloadAndDisplayImage(adIcon, nativeAdIcon)
+                nativeAdMadia.setNativeAd(nativeFacebookAd)
+
+                val adChoisesContainer: LinearLayout = findViewById(R.id.ad_choices_container)
+                val adChoisesView: AdChoicesView = AdChoicesView(applicationContext, nativeFacebookAd, true)
+                adChoisesContainer.addView(adChoisesView)
+
+                var clickableView: ArrayList<View> = ArrayList()
+                clickableView.add(nativeAdTitle)
+                clickableView.add(nativeAdCallToAction)
+
+                nativeFacebookAd.registerViewForInteraction(nativeAdContainer, clickableView)
+            }
+            override fun onLoggingImpression(p0: Ad?) {}
+        })
+        nativeFacebookAd.loadAd()
     }
 
     // Metodos listener intersticial Facebook

@@ -83,12 +83,19 @@
         android:id="@+id/adView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:adSize="SMART_BANNER"
-        app:adUnitId="@string/adMobIdBanner"
-        android:visibility="gone"/>
+        app:adUnitId="@string/adMobIdBanner" />
+
     <RelativeLayout
         android:id="@+id/adViewContainer"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/native_ad_container"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        />
+        android:layout_gravity="center"
+        android:orientation="vertical" />
 </LinearLayout>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="idBannerFacebook">152440002057644_152445308723780</string>
-    <string name="idIntersticialFacebook">152440002057644_152457748722536</string>
-    <string name="idNativoFacebook">152440002057644_152462472055397</string>
+    <string name="idBannerFacebook" translatable="false">152440002057644_152445308723780</string>
+    <string name="idIntersticialFacebook" translatable="false">152440002057644_152457748722536</string>
+    <string name="idNativoFacebook" translatable="false">152440002057644_152462472055397</string>
 </resources>

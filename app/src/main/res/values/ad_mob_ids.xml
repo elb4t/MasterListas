@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="adMobIdApp">ca-app-pub-8071428174698985~6551716743</string>
-    <string name="adMobIdBanner">ca-app-pub-8071428174698985/4803520801</string>
-    <string name="adMobIdIntersticial">ca-app-pub-8071428174698985/5399907861</string>
-    <string name="adMobIdVideoBonificado">ca-app-pub-8071428174698985/5779181812</string>
+    <string name="adMobIdApp" translatable="false">ca-app-pub-8071428174698985~6551716743</string>
+    <string name="adMobIdBanner" translatable="false">ca-app-pub-8071428174698985/4803520801</string>
+    <string name="adMobIdIntersticial" translatable="false">ca-app-pub-8071428174698985/5399907861</string>
+    <string name="adMobIdVideoBonificado" translatable="false">ca-app-pub-8071428174698985/5779181812</string>
 </resources>

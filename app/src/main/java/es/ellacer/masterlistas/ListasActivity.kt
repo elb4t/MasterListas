@@ -386,6 +386,7 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
             override fun onServiceConnected(p0: ComponentName?, service: IBinder?) {
                 serviceBilling = IInAppBillingService.Stub.asInterface(service)
                 checkPurchasedInAppProducts()
+                checkPurchasedSubscriptions()
             }
         }
         var serviceIntent = Intent("com.android.vending.billing.InAppBillingService.BIND")
@@ -557,6 +558,37 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
                     System.out.println("Inapp Sku: " + sku)
                     if (sku.equals(ID_ARTICULO)) {
                         Toast.makeText(this, "Inapp comprado: $sku el dia $purchaseData", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+        }
+    }
+
+    fun checkPurchasedSubscriptions() {
+        var ownedItemsInApp: Bundle? = null
+        if (serviceBilling != null) {
+            try {
+                ownedItemsInApp = serviceBilling!!.getPurchases(3, packageName, "subs", null)
+            } catch (e: RemoteException) {
+                e.printStackTrace()
+            }
+            var response: Int = ownedItemsInApp!!.getInt("RESPONSE_CODE")
+            System.out.println(response)
+            Log.e("_______","-----------------------------")
+            if (response == 0) {
+                var ownedSkus: ArrayList<String>  = ownedItemsInApp.getStringArrayList ("INAPP_PURCHASE_ITEM_LIST")
+                var purchaseDataList:ArrayList<String>  = ownedItemsInApp.getStringArrayList ("INAPP_PURCHASE_DATA_LIST")
+                var signatureList:ArrayList<String>  = ownedItemsInApp.getStringArrayList ("INAPP_DATA_SIGNATURE_LIST")
+                var continuationToken: String = ownedItemsInApp.getString ("INAPP_CONTINUATION_TOKEN") ?: ""
+                for ( i in purchaseDataList.indices) {
+                    var purchaseData: String = purchaseDataList[i]
+                    var signature: String = signatureList[i]
+                    var sku: String = ownedSkus[i]
+                    System.out.println("Suscription Purchase data: " + purchaseData)
+                    System.out.println("Suscription Signature: " + signature)
+                    System.out.println("Suscription Sku: " + sku)
+                    if (sku.equals(ID_ARTICULO)) {
+                        Toast.makeText(this, "Suscrito correctamente: $sku el dia $purchaseData", Toast.LENGTH_LONG).show()
                     }
                 }
             }

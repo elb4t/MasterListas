@@ -19,9 +19,12 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
-import com.facebook.ads.AdSettings
+import com.facebook.ads.*
 import com.facebook.ads.AdSize
 import com.google.android.gms.ads.*
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.ads.reward.RewardItem
 import com.google.android.gms.ads.reward.RewardedVideoAd
 import com.google.android.gms.ads.reward.RewardedVideoAdListener
@@ -37,7 +40,7 @@ import java.io.FileOutputStream
 import java.io.IOException
 
 
-class ListasActivity : AppCompatActivity(), RewardedVideoAdListener {
+class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, InterstitialAdListener {
 
     private lateinit var mDrawer: FlowingDrawer
     private lateinit var adapter: RecyclerView.Adapter<*>
@@ -51,6 +54,7 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener {
     private lateinit var intersticialAd: InterstitialAd
     private lateinit var mRewardedVideoAd: RewardedVideoAd
     private lateinit var adViewFacebook: com.facebook.ads.AdView
+    private lateinit var intersticialFacebookAd: com.facebook.ads.InterstitialAd
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,10 +99,11 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener {
         val navigationView = findViewById<View>(R.id.vNavigation) as NavigationView
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.nav_1 ->{
+                R.id.nav_1 -> {
                     if (mRewardedVideoAd.isLoaded)
                         mRewardedVideoAd.show()
                 }
+                R.id.nav_2 -> crearAnuncioIntersticialFacebook()
                 R.id.nav_compartir -> compatirTexto("http://play.google.com/store/apps/details?id=" + packageName)
                 R.id.nav_compartir_lista -> compatirTexto("LISTA DE LA COMPRA: patatas, leche, huevos. ---- Compartido por: http://play.google.com/store/apps/details?id=" + packageName)
                 R.id.nav_compartir_logo -> {
@@ -254,13 +259,40 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener {
         dialog.show()
     }
 
-    fun crearAnuncioBannerFacebook(){
+    fun crearAnuncioBannerFacebook() {
         adViewFacebook = com.facebook.ads.AdView(this, getString(R.string.idBannerFacebook), AdSize.BANNER_320_50)
         AdSettings.addTestDevice("8613d68ce24be2b3e69131393d439671")
         AdSettings.addTestDevice("54702c096a73443cc79a60965f5fc7da")
         adViewContainer.addView(adViewFacebook)
         adViewFacebook.loadAd()
-        Log.e("FACEBOOK","ADS LOADED")
+    }
+
+    fun crearAnuncioIntersticialFacebook() {
+        intersticialFacebookAd = com.facebook.ads.InterstitialAd(this, getString(R.string.idIntersticialFacebook))
+        AdSettings.addTestDevice("8613d68ce24be2b3e69131393d439671")
+        AdSettings.addTestDevice("54702c096a73443cc79a60965f5fc7da")
+        intersticialFacebookAd.setAdListener(this)
+        intersticialFacebookAd.loadAd()
+    }
+
+    // Metodos listener intersticial Facebook
+    override fun onError(p0: Ad?, adError: AdError) {
+        Toast.makeText(this, "Error: ${adError.errorMessage}", Toast.LENGTH_LONG).show()
+    }
+
+    override fun onAdLoaded(p0: Ad?) {
+        intersticialFacebookAd.show()
+    }
+    override fun onInterstitialDisplayed(p0: Ad?) {
+    }
+
+    override fun onAdClicked(p0: Ad?) {
+    }
+
+    override fun onInterstitialDismissed(p0: Ad?) {
+    }
+
+    override fun onLoggingImpression(p0: Ad?) {
     }
 
     // Metodos listener video rewarded
@@ -275,6 +307,7 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener {
     override fun onRewarded(rewardItem: RewardItem) {
         Toast.makeText(this, "onRewarded: moneda virtual: ${rewardItem.type}  aumento: ${rewardItem.amount}", Toast.LENGTH_SHORT).show()
     }
+
     override fun onRewardedVideoAdLeftApplication() {
     }
 

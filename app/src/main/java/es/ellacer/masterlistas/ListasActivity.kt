@@ -132,6 +132,7 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
                 R.id.nav_articulo_no_recurrente -> comprarProducto()
                 R.id.nav_suscripcion -> comprarSuscripcion(this)
                 R.id.nav_consulta_inapps_disponibles -> getInAppInformationOfProducts()
+                R.id.nav_consulta_subs_disponibles -> getSubscriptionInformationOfProducts()
                 else -> Toast.makeText(applicationContext, menuItem.title, Toast.LENGTH_SHORT).show()
             }
             false
@@ -490,6 +491,36 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
                     println("InApp Reference: " + ref)
                     val price = `object`.getString("price")
                     println("InApp Price: " + price)
+                }
+            }
+        } catch (e: RemoteException) {
+            e.printStackTrace()
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+
+    }
+
+    private fun getSubscriptionInformationOfProducts() {
+        val skuListSubs = ArrayList<String>()
+        skuListSubs.add(ID_SUSCRIPCION)
+        val querySkusSubs = Bundle()
+        querySkusSubs.putStringArrayList("ITEM_ID_LIST", skuListSubs)
+        val skuDetailsSubs: Bundle
+        val responseListSubs: ArrayList<String>?
+        try {
+            skuDetailsSubs = serviceBilling!!.getSkuDetails(3, packageName, "subs", querySkusSubs)
+            val responseSubs = skuDetailsSubs.getInt("RESPONSE_CODE")
+            println(responseSubs)
+            if (responseSubs == 0) {
+                responseListSubs = skuDetailsSubs.getStringArrayList("DETAILS_LIST")
+                assert(responseListSubs != null)
+                for (thisResponse in responseListSubs!!) {
+                    val `object` = JSONObject(thisResponse)
+                    val ref = `object`.getString("productId")
+                    println("Subscription Reference: " + ref)
+                    val price = `object`.getString("price")
+                    println("Subscription Price: " + price)
                 }
             }
         } catch (e: RemoteException) {

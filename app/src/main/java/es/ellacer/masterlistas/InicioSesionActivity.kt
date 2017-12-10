@@ -8,6 +8,7 @@ import android.text.InputType
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.activity_inicio_sesion.*
 
 
@@ -20,6 +21,8 @@ class InicioSesionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_inicio_sesion)
+
+        MobileAds.initialize(this,getString(R.string.adMobIdApp))
 
         boton_facebook.setOnClickListener { incrementaIndiceDeBloqueo(it) }
         boton_google.setOnClickListener { incrementaIndiceDeANR(it) }

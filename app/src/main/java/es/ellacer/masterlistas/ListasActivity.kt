@@ -20,6 +20,8 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -42,10 +44,16 @@ class ListasActivity : AppCompatActivity() {
     private lateinit var remoteConfig: FirebaseRemoteConfig
     private val CACHE_TIME_SECONDS: Long = 30
 
+    private lateinit var adView: AdView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listas)
         showCrossPromoDialog()
+
+        adView = findViewById(R.id.adView)
+        val adRequest = AdRequest.Builder().build()
+        adView.loadAd(adRequest)
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
@@ -194,7 +202,7 @@ class ListasActivity : AppCompatActivity() {
         dialog.setContentView(R.layout.dialog_crosspromotion)
         dialog.setCancelable(true)
         val buttonCancel: Button = dialog.findViewById(R.id.buttonCancel)
-        buttonCancel.setOnClickListener{ dialog.dismiss() }
+        buttonCancel.setOnClickListener { dialog.dismiss() }
         val boton: Button = dialog.findViewById(R.id.buttonDescargar)
         boton.setOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?" + "id=com.mimisoftware.emojicreatoremoticonosemoticones")))

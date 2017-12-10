@@ -67,7 +67,7 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
     // Billing In-App
     private var serviceBilling: IInAppBillingService? = null
     private lateinit var serviceConnection: ServiceConnection
-    private val ID_ARTICULO = "org.example.masterlistas.producto"
+    private val ID_ARTICULO = "es.ellacer.masterlistas.producto"
     private val INAPP_BILLING = 1
     private val developerPayLoad = "masterlistasPay"
 
@@ -420,12 +420,24 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
                         var purchaseToken: String = jo.getString("purchaseToken")
                         if (sku.equals(ID_ARTICULO)) {
                             Toast.makeText(this, "Compra completada", Toast.LENGTH_LONG).show()
+                            backToBuy(purchaseToken)
                         }
                     } catch (e: JSONException) {
                         e.printStackTrace()
                     }
                 }
             }
+        }
+    }
+
+    fun backToBuy(token: String) {
+        if (serviceBilling != null) {
+            try {
+                val response = serviceBilling!!.consumePurchase(3, packageName, token)
+            } catch (e: RemoteException) {
+                e.printStackTrace()
+            }
+
         }
     }
 }

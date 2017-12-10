@@ -2,4 +2,5 @@
 <resources>
     <string name="adMobIdApp">ca-app-pub-8071428174698985~6551716743</string>
     <string name="adMobIdBanner">ca-app-pub-8071428174698985/4803520801</string>
+    <string name="adMobIdIntersticial">ca-app-pub-8071428174698985/5399907861</string>
 </resources>

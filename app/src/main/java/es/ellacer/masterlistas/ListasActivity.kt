@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.NavigationView
-import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.FileProvider
 import android.support.v4.util.Pair
@@ -20,8 +19,10 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -45,10 +46,22 @@ class ListasActivity : AppCompatActivity() {
     private val CACHE_TIME_SECONDS: Long = 30
 
     private lateinit var adView: AdView
+    private lateinit var intersticialAd: InterstitialAd
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listas)
+
+        intersticialAd = InterstitialAd(this)
+        intersticialAd.adUnitId = getString(R.string.adMobIdIntersticial)
+        intersticialAd.loadAd(AdRequest.Builder().build())
+
+        intersticialAd.adListener = object : AdListener() {
+            override fun onAdClosed() {
+                intersticialAd.loadAd(AdRequest.Builder().build())
+            }
+        }
+
         showCrossPromoDialog()
 
         adView = findViewById(R.id.adView)
@@ -87,9 +100,13 @@ class ListasActivity : AppCompatActivity() {
         }
 
         // Fab button
-        fab.setOnClickListener(View.OnClickListener { view ->
-            Snackbar.make(view, "Se presionó el FAB", Snackbar.LENGTH_LONG).show()
-        })
+        fab.setOnClickListener { view ->
+            if (intersticialAd.isLoaded) {
+                intersticialAd.show()
+            } else {
+                Toast.makeText(this, "El Anuncio no esta disponible aun", Toast.LENGTH_LONG).show()
+            }
+        }
 
         //Inicializar los elementos
         var items = ArrayList<Lista>()

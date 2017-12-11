@@ -78,6 +78,9 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listas)
 
+        // In-app billing
+        serviceConectInAppBilling()
+
         // Cross promotion
         showCrossPromoDialog()
 
@@ -87,6 +90,7 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
         mRewardedVideoAd.loadAd(getString(R.string.adMobIdVideoBonificado), AdRequest.Builder().addTestDevice("EF7FB31EE1E155863F06CF1D12FB1B68").build())
 
         // Banner Facebook
+        AdSettings.addTestDevice("daaaad53d2cb220131208aa94504f944")
         crearAnuncioBannerFacebook()
         crearAnuncioNativoFacebook()
 
@@ -133,7 +137,7 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
 
         // Fab button
         fab.setOnClickListener { view ->
-            if (intersticialAd.isLoaded) {
+            if (showInterticial && intersticialAd.isLoaded) {
                 intersticialAd.show()
             } else {
                 Toast.makeText(this, "El Anuncio no esta disponible aun", Toast.LENGTH_LONG).show()
@@ -191,8 +195,7 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
 
         RateMyApp(this).app_launched()
 
-        // In-app billing
-        serviceConectInAppBilling()
+
     }
 
 
@@ -200,6 +203,7 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
         if (mDrawer.isMenuVisible()) {
             mDrawer.closeMenu()
         } else {
+            unbindService(serviceConnection)
             super.onBackPressed()
         }
     }
@@ -384,16 +388,18 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
             var buyIntentBundle: Bundle? = null
             try {
                 buyIntentBundle = serviceBilling!!.getBuyIntent(3, packageName, ID_ARTICULO, "inapp", developerPayLoad)
-            } catch (e: RemoteException) {
-                e.printStackTrace()
-            }
-            var pendingIntent: PendingIntent = buyIntentBundle!!.getParcelable("BUY_INTENT")
-            try {
+
+                var pendingIntent: PendingIntent = buyIntentBundle!!.getParcelable("BUY_INTENT")
+
                 if (pendingIntent != null) {
                     startIntentSenderForResult(pendingIntent.intentSender, INAPP_BILLING, Intent(), 0, 0, 0)
                 }
+            } catch (e: RemoteException) {
+                e.printStackTrace()
             } catch (e: IntentSender.SendIntentException) {
                 e.printStackTrace()
+            } catch (e: IllegalStateException){
+                Toast.makeText(this, "Error InApp Billing service not available", Toast.LENGTH_LONG).show()
             }
         } else {
             Toast.makeText(this, "InApp Billing service not available", Toast.LENGTH_LONG).show()
@@ -424,6 +430,8 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
                     } catch (e: JSONException) {
                         e.printStackTrace()
                     }
+                }else{
+                    setAds(true)
                 }
             }
         }
@@ -433,6 +441,7 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
         if (serviceBilling != null) {
             try {
                 val response = serviceBilling!!.consumePurchase(3, packageName, token)
+                Log.e("INAPP","Producto activo para volver a comprar")
             } catch (e: RemoteException) {
                 e.printStackTrace()
             }
@@ -535,6 +544,7 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
                 var purchaseDataList: ArrayList<String> = ownedItemsInApp.getStringArrayList("INAPP_PURCHASE_DATA_LIST")
                 var signatureList: ArrayList<String> = ownedItemsInApp.getStringArrayList("INAPP_DATA_SIGNATURE_LIST")
                 var continuationToken: String = ownedItemsInApp.getString("INAPP_CONTINUATION_TOKEN") ?: ""
+                setAds(true)
                 for (i in purchaseDataList.indices) {
                     var purchaseData: String = purchaseDataList[i]
                     var signature: String = signatureList[i]
@@ -576,7 +586,7 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
                     System.out.println("Suscription Purchase data: " + purchaseData)
                     System.out.println("Suscription Signature: " + signature)
                     System.out.println("Suscription Sku: " + sku)
-                    if (sku.equals(ID_ARTICULO)) {
+                    if (sku.equals(ID_SUSCRIPCION)) {
                         Toast.makeText(this, "Suscrito correctamente: $sku el dia $purchaseData", Toast.LENGTH_LONG).show()
                     }
                 }
@@ -585,9 +595,16 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
     }
 
     fun setAds(adsEnabled: Boolean) {
+        adView = findViewById(R.id.adView)
+        adView.visibility = View.VISIBLE
+        var adViewFace: RelativeLayout = findViewById(R.id.adViewContainer)
+        adViewFace.visibility = View.VISIBLE
+        var adViewFaceNative: LinearLayout = findViewById(R.id.native_ad_container)
+        adViewFaceNative.visibility = View.VISIBLE
+
+
         if (adsEnabled) {
             // Banner Ad
-            adView = findViewById(R.id.adView)
             val adRequest = AdRequest.Builder().addTestDevice("EF7FB31EE1E155863F06CF1D12FB1B68").build()
             adView.loadAd(adRequest)
 
@@ -605,6 +622,8 @@ class ListasActivity : AppCompatActivity(), RewardedVideoAdListener, Interstitia
         } else {
             showInterticial = false
             adView.visibility = View.GONE
+            adViewFace.visibility = View.GONE
+            adViewFaceNative.visibility = View.GONE
         }
     }
 }
